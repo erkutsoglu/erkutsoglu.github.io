@@ -3,40 +3,273 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>erkush34</title>
+    <title>erkutsoglu | Game Designer</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
     <style>
-        /* Tüm sayfayı kaplayıp içeriği tam ortaya hizalar */
+        :root {
+            --bg-top: #050505;
+            --bg-bottom: #ffffff;
+            --ink: #111827;
+            --ink-soft: #6b7280;
+            --border: transparent;
+            --border-soft: transparent;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
-            padding: 0;
+            min-height: 100vh;
+            background:
+                linear-gradient(
+                    to bottom,
+                    var(--bg-top) 0,
+                    var(--bg-top) 220px,
+                    var(--bg-bottom) 220px,
+                    var(--bg-bottom) 100%
+                );
+            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            color: var(--ink);
+        }
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+            align-items: stretch;
+            justify-content: stretch;
+        }
+
+        .frame {
+            width: 100%;
+            min-height: 100vh;
+            border-radius: 0;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero-bar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 26px 24px 18px;
+            border-bottom: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .hero-id {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .hero-name {
+            margin: 0;
+            font-family: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-weight: 700;
+            font-size: 28px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: #f9fafb;
+        }
+
+        .hero-role {
+            margin: 0;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: #d1d5db;
+        }
+
+        .hero-tabs {
+            margin-top: 18px;
             display: flex;
             justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #ffffff; /* Bembeyaz sayfa */
+            gap: 8px;
+            width: 100%;
+            max-width: 520px;
+            font-family: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
         }
 
-        /* Yazının stili */
-        h1 {
-            font-family: 'Arial Black', Impact, sans-serif; /* Dolu dolu ve kalın font */
-            font-size: 10vw; /* Ekran genişliğine göre büyüyen dev boyut */
-            font-weight: 900; /* En kalın ağırlık */
-            color: #111111; /* Simsiyah yerine çok koyu bir antrasit, ekranda daha şık durur */
+        .hero-tab {
+            border: none;
+            background: transparent;
+            padding: 10px 0;
+            cursor: pointer;
+            color: #9ca3af;
+            border-radius: 0;
+            flex: 1 1 0;
+            text-align: center;
+        }
+
+        .hero-tab.is-active {
+            background-color: #f9fafb;
+            color: #111827;
+        }
+
+        .main {
+            flex: 1;
+            border-top: 1px solid var(--border-soft);
+        }
+
+        .content {
+            padding: 72px 24px 32px;
+            max-width: 840px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel {
+            display: none;
+        }
+
+        .panel.is-active {
+            display: block;
+        }
+
+        .panel-label {
+            font-family: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--ink-soft);
+            margin-bottom: 10px;
+        }
+
+        .panel-title {
             margin: 0;
-            letter-spacing: -2px; /* Harfleri hafifçe birbirine yaklaştırıp daha tok bir görüntü verir */
+            font-size: 0;
+            line-height: 0;
+            text-indent: -9999px;
+            border: 0;
+            padding: 0;
         }
 
-        /* Telefon ekranlarında çok küçülmesini engellemek için */
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 4rem;
+        .panel-text {
+            margin: 0;
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--ink-soft);
+        }
+
+        .panel-text strong {
+            color: var(--ink);
+        }
+
+        @media (max-width: 900px) {
+            .frame {
+                min-height: auto;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero-name {
+                font-size: 22px;
+                letter-spacing: 0.18em;
+            }
+
+            .hero-tabs {
+                width: 100%;
+                justify-content: space-between;
             }
         }
     </style>
 </head>
 <body>
+    <div class="page">
+        <div class="frame">
+            <header class="hero-bar">
+                <div class="hero-id">
+                    <h1 class="hero-name">erkutsoglu</h1>
+                    <p class="hero-role">game designer</p>
+                </div>
+                <nav class="hero-tabs" aria-label="Bölümler">
+                    <button class="hero-tab is-active" data-section-target="projects">Projects</button>
+                    <button class="hero-tab" data-section-target="bio">Bio</button>
+                    <button class="hero-tab" data-section-target="academics">Academics</button>
+                </nav>
+            </header>
 
-    <h1>erkush34</h1>
+            <main class="main" aria-live="polite">
+                <section class="content">
+                    <article class="panel is-active" data-section="projects" aria-label="Projects">
+                        <h2 class="panel-title">Oyun projeleri ve deneyler</h2>
+                        <p class="panel-text">
+                            Buraya; shipped oyunlar, prototipler ve sistem denemeleri için sade bir liste kuracağız.
+                            Her projede <strong>platform</strong>, <strong>rol</strong> ve bir‑iki cümlelik tasarım odağı
+                            (economy, pacing, systems vb.) net biçimde görünecek.
+                        </p>
+                    </article>
 
+                    <article class="panel" data-section="bio" aria-label="Bio">
+                        <h2 class="panel-title">Kısa biyografi ve yaklaşım</h2>
+                        <p class="panel-text">
+                            Bu alan, oyun tasarımına nasıl girdiğini ve bugün neye odaklandığını anlatan kısa bir metin için.
+                            <strong>Okunabilirlik</strong>, <strong>oyuncu ifadesi</strong> ve <strong>ekonomi netliği</strong>
+                            gibi tasarım prensiplerin sade cümlelerle listelenecek.
+                        </p>
+                    </article>
+
+                    <article class="panel" data-section="academics" aria-label="Academics">
+                        <h2 class="panel-title">Akademik işler ve araştırmalar</h2>
+                        <p class="panel-text">
+                            Yüksek lisans tezin ve diğer araştırmalar burada kronolojik olarak yer alacak.
+                            Her satırda <strong>yıl</strong>, <strong>kurum</strong>, <strong>başlık</strong> ve tek cümlelik
+                            bir <strong>bulgu</strong> tutulacak; böylece sayfa minimal kalırken bilgi yoğun olacak.
+                        </p>
+                    </article>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const tabs = document.querySelectorAll(".hero-tab");
+            const panels = document.querySelectorAll(".panel");
+
+            function activate(key) {
+                panels.forEach((panel) => {
+                    panel.classList.toggle("is-active", panel.getAttribute("data-section") === key);
+                });
+
+                tabs.forEach((tab) => {
+                    tab.classList.toggle("is-active", tab.getAttribute("data-section-target") === key);
+                });
+
+                if (history.replaceState) {
+                    history.replaceState(null, "", "#" + key);
+                }
+            }
+
+            tabs.forEach((tab) => {
+                tab.addEventListener("click", function () {
+                    const key = this.getAttribute("data-section-target");
+                    if (key) activate(key);
+                });
+            });
+
+            const hash = window.location.hash.replace("#", "");
+            if (hash) {
+                const initial = document.querySelector('.hero-tab[data-section-target="' + hash + '"]');
+                if (initial) activate(hash);
+            }
+        })();
+    </script>
 </body>
 </html>
