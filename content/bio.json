@@ -1,0 +1,16 @@
+{
+  "lead": "İstanbul'da çalışan bir **oyun tasarımcısı**. Sistemler, ekonomi ve tempo üzerine.",
+  "body": [
+    "2018'den beri tek başına ve küçük takımlarla oyun yapıyorum. Çoğunlukla mekaniğin metinden önce konuştuğu, ilk on dakikada oyuncunun \"tamam, bu nasıl bir şeymiş\" diyebildiği oyunlar.",
+    "Roguelike'lar, ekonomi-ağırlıklı sim'ler ve kısa-form deneysel projeler arasında geziniyorum. Sayılar, tablolar ve bir oyuncunun onları farkında olmadan okuma şekliyle ilgileniyorum.",
+    "Şu sıralar: kendi prototiplerim, küçük çaplı yarı-zamanlı danışmanlıklar ve Bilgi Üniversitesi'nde yüksek lisans tezimi bitirme telaşı. Mesai dışında genelde oynuyorum, bazen yazıyorum."
+  ],
+  "creed_label": "manifesto / kısa",
+  "creed": [
+    "Oyuncular sistemleri metinden daha hızlı okur.",
+    "Ekonomi netliği, tasarım hilesinden önce gelir.",
+    "Bir oyunun ilk on dakikası, son on saatinden önemlidir.",
+    "\"Eğlence\" tasarlanmaz; doğru kısıtlamalar bulunur.",
+    "Eğer mekanik anlatıyorsa, metin sustursun."
+  ]
+}

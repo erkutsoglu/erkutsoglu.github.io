@@ -1,0 +1,26 @@
+{
+  "email": "erkutsoglu@gmail.com",
+  "email_note": "en hızlı: e-posta",
+  "links": [
+    {
+      "label": "x / twitter",
+      "handle": "@erkush34",
+      "url": "https://x.com/erkush34"
+    },
+    {
+      "label": "linkedin",
+      "handle": "/in/erkush34",
+      "url": "https://www.linkedin.com/in/erkush34"
+    },
+    {
+      "label": "itch.io",
+      "handle": "/erkush34",
+      "url": "https://erkush34.itch.io"
+    },
+    {
+      "label": "github",
+      "handle": "/erkush34",
+      "url": "https://github.com/erkush34"
+    }
+  ]
+}

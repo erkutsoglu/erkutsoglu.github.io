@@ -1,0 +1,12 @@
+{
+  "projects": [
+    "velocity",
+    "ledger",
+    "silt",
+    "crows-foot",
+    "minutiae",
+    "cassandra",
+    "afterglow",
+    "burnpile"
+  ]
+}

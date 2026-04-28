@@ -1,0 +1,40 @@
+{
+  "entries": [
+    {
+      "year": "2026",
+      "title": "procedural narrative frameworks in roguelikes",
+      "note": "M.A. tezi — devam ediyor. Bulgu: ekonomi eğrileri, tekrar oynanışı dal-budak hikâyeden daha fazla yönlendiriyor.",
+      "place": "bilgi · ma. game design"
+    },
+    {
+      "year": "2024",
+      "title": "designing for the second hour",
+      "note": "Konferans sunumu. İlk bir saatten sonra oyuncuyu tutan tasarım kararları.",
+      "place": "gdc anatolia · talk"
+    },
+    {
+      "year": "2023",
+      "title": "why card games teach economics better than textbooks",
+      "note": "Workshop. Kart oyunlarında kıtlık, takas ve bilgi asimetrisi üzerine.",
+      "place": "istanbul · workshop"
+    },
+    {
+      "year": "2022",
+      "title": "player-driven difficulty in single-player roguelikes",
+      "note": "Akademik makale. Oyuncunun kendi zorluk eğrisini seçtiği sistemlerin tasarım çıkarımları.",
+      "place": "odtü · journal"
+    },
+    {
+      "year": "2021",
+      "title": "numbers as narrative",
+      "note": "Misafir ders. Sayıların ve UI elementlerinin oyuncu için nasıl hikâye anlattığı.",
+      "place": "bilgi · guest lecture"
+    },
+    {
+      "year": "2019",
+      "title": "b.a. thesis — pacing in short-form games",
+      "note": "Lisans tezi. 30 dakika altı oyunların yapı analizi ve pacing örüntüleri.",
+      "place": "bilgi · ba. comm. design"
+    }
+  ]
+}
