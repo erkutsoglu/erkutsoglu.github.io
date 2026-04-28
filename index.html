@@ -7,7 +7,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=VT323&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -24,9 +24,9 @@
         body {
             background: var(--bg);
             color: var(--fg);
-            font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-            font-size: 13px;
-            line-height: 1.5;
+            font-family: "VT323", "IBM Plex Mono", ui-monospace, monospace;
+            font-size: 17px;
+            line-height: 1.45;
             -webkit-font-smoothing: antialiased;
             text-rendering: geometricPrecision;
             overflow-x: hidden;
@@ -88,9 +88,9 @@
             border-bottom: var(--rule);
         }
         .bar-l { display: flex; align-items: center; gap: 12px; }
-        .bar-r { display: flex; align-items: center; gap: 18px; justify-self: end; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+        .bar-r { display: flex; align-items: center; gap: 18px; justify-self: end; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; }
         .brand { font-weight: 600; letter-spacing: 0.02em; font-size: 13px; }
-        .brand sup { font-size: 9px; vertical-align: super; opacity: 0.6; margin-left: 2px; letter-spacing: 0; }
+        .brand sup { font-size: 15px; vertical-align: super; opacity: 0.6; margin-left: 2px; letter-spacing: 0; }
 
         .nav {
             display: flex;
@@ -104,7 +104,7 @@
             background: transparent;
             cursor: pointer;
             padding: 6px 14px;
-            font-size: 11px;
+            font-size: 14px;
             text-transform: uppercase;
             letter-spacing: 0.18em;
             transition: background 0.15s, color 0.15s;
@@ -190,7 +190,7 @@
             position: absolute;
             bottom: 8px;
             left: 10px;
-            font-size: 9px;
+            font-size: 15px;
             text-transform: uppercase;
             letter-spacing: 0.24em;
             color: #fff;
@@ -211,7 +211,7 @@
             gap: 56px;
             white-space: nowrap;
             animation: ticker 38s linear infinite;
-            font-size: 11px;
+            font-size: 14px;
             text-transform: uppercase;
             letter-spacing: 0.22em;
             width: max-content;
@@ -222,12 +222,19 @@
             to { transform: translateX(-50%); }
         }
 
-        /* ─── panels (tab content) ─────────────────────── */
-        .panel { display: none; animation: fadein 0.25s ease-out; }
-        .panel.is-active { display: block; }
-        @keyframes fadein {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* ─── panels (tab content · CRT power-on flicker) ─ */
+        .panel { display: none; }
+        .panel.is-active {
+            display: block;
+            animation: crtPowerOn 0.26s cubic-bezier(0.45, 0, 0.2, 1);
+            transform-origin: center center;
+        }
+        @keyframes crtPowerOn {
+            0%   { transform: scaleY(0.004); opacity: 0; }
+            8%   { transform: scaleY(0.012); opacity: 1; }
+            18%  { transform: scaleY(0.04); }
+            38%  { transform: scaleY(0.22); }
+            100% { transform: scaleY(1); opacity: 1; }
         }
 
         .panel-head {
@@ -239,7 +246,7 @@
             border-bottom: var(--rule);
         }
         .ph-meta {
-            font-size: 10px;
+            font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 0.22em;
             opacity: 0.7;
@@ -259,7 +266,7 @@
         .works-status {
             list-style: none;
             padding: 32px var(--pad);
-            font-size: 11px;
+            font-size: 14px;
             text-transform: uppercase;
             letter-spacing: 0.22em;
             opacity: 0.55;
@@ -276,7 +283,7 @@
             line-height: 1.6;
         }
         .works-error strong {
-            font-size: 11px;
+            font-size: 14px;
             text-transform: uppercase;
             letter-spacing: 0.22em;
         }
@@ -285,7 +292,7 @@
             padding: 6px 10px;
             background: #000;
             color: #fff;
-            font-size: 12px;
+            font-size: 15px;
             align-self: flex-start;
         }
         .work {
@@ -296,19 +303,37 @@
             padding: 22px var(--pad);
             border-bottom: var(--thin);
             cursor: pointer;
-            transition: background 0.18s, color 0.18s, padding 0.18s;
+            transition: background 0.16s, color 0.16s, padding 0.16s;
             position: relative;
+            isolation: isolate;
+            overflow: hidden;
+        }
+        .work::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='6' height='6' viewBox='0 0 6 6'><rect width='1' height='1' x='0' y='0' fill='%23000'/><rect width='1' height='1' x='3' y='1' fill='%23000'/><rect width='1' height='1' x='1' y='3' fill='%23000'/><rect width='1' height='1' x='4' y='4' fill='%23000'/><rect width='1' height='1' x='2' y='5' fill='%23000'/><rect width='1' height='1' x='5' y='2' fill='%23000'/></svg>");
+            background-size: 6px 6px;
+            opacity: 0;
+            pointer-events: none;
+            z-index: -1;
+            transition: opacity 0.22s ease;
         }
         .work:hover {
             background: #000;
             color: #fff;
             padding-left: calc(var(--pad) + 8px);
+            transition: background 0.32s ease 0.08s, color 0.22s ease 0.06s, padding 0.18s;
+        }
+        .work:hover::before {
+            opacity: 1;
+            transition: opacity 0.06s ease;
         }
         .work:hover .w-arrow { transform: translate(6px, -6px); }
         .work:hover .w-meta { opacity: 1; }
 
         .w-num {
-            font-size: 11px;
+            font-size: 14px;
             letter-spacing: 0.18em;
             opacity: 0.7;
         }
@@ -327,7 +352,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 14px;
-            font-size: 10px;
+            font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 0.2em;
             opacity: 0.75;
@@ -376,7 +401,7 @@
             gap: 40px;
         }
         .creed-lbl {
-            font-size: 10px;
+            font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 0.24em;
             opacity: 0.5;
@@ -396,7 +421,7 @@
         .creed-list li:last-child { border-bottom: 0; padding-bottom: 0; }
         .creed-list li::before {
             content: counter(c, decimal-leading-zero);
-            font-size: 10px;
+            font-size: 13px;
             letter-spacing: 0.2em;
             opacity: 0.5;
             padding-top: 4px;
@@ -412,8 +437,30 @@
             padding: 24px var(--pad);
             border-bottom: var(--thin);
             transition: background 0.16s, color 0.16s;
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
         }
-        .acad li:hover { background: #000; color: #fff; }
+        .acad li::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='6' height='6' viewBox='0 0 6 6'><rect width='1' height='1' x='0' y='0' fill='%23000'/><rect width='1' height='1' x='3' y='1' fill='%23000'/><rect width='1' height='1' x='1' y='3' fill='%23000'/><rect width='1' height='1' x='4' y='4' fill='%23000'/><rect width='1' height='1' x='2' y='5' fill='%23000'/><rect width='1' height='1' x='5' y='2' fill='%23000'/></svg>");
+            background-size: 6px 6px;
+            opacity: 0;
+            pointer-events: none;
+            z-index: -1;
+            transition: opacity 0.22s ease;
+        }
+        .acad li:hover {
+            background: #000;
+            color: #fff;
+            transition: background 0.32s ease 0.08s, color 0.22s ease 0.06s;
+        }
+        .acad li:hover::before {
+            opacity: 1;
+            transition: opacity 0.06s ease;
+        }
         .acad-yr { font-size: 13px; font-weight: 600; letter-spacing: 0.04em; }
         .acad-body { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
         .acad-title {
@@ -425,9 +472,9 @@
             letter-spacing: -0.015em;
             line-height: 1.15;
         }
-        .acad-note { margin: 0; font-size: 12px; opacity: 0.7; line-height: 1.55; }
+        .acad-note { margin: 0; font-size: 15px; opacity: 0.7; line-height: 1.55; }
         .acad-place {
-            font-size: 10px;
+            font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 0.2em;
             text-align: right;
@@ -473,7 +520,7 @@
         }
         .contact-grid a:hover { background: #000; color: #fff; }
         .contact-grid a span:first-child {
-            font-size: 9px;
+            font-size: 15px;
             letter-spacing: 0.24em;
             text-transform: uppercase;
             opacity: 0.6;
@@ -498,7 +545,7 @@
         }
         .foot-grid .lbl {
             display: block;
-            font-size: 9px;
+            font-size: 15px;
             text-transform: uppercase;
             letter-spacing: 0.26em;
             opacity: 0.5;
@@ -518,7 +565,7 @@
             padding: 14px 0 18px;
             display: flex;
             justify-content: space-between;
-            font-size: 10px;
+            font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 0.24em;
             opacity: 0.7;
@@ -558,13 +605,180 @@
         }
 
         @media (max-width: 520px) {
-            .nav button { padding: 5px 8px; font-size: 10px; letter-spacing: 0.14em; }
+            .nav button { padding: 5px 8px; font-size: 13px; letter-spacing: 0.14em; }
             .panel-head { grid-template-columns: 1fr; gap: 10px; }
             .ph-meta { text-align: left; }
             .work { grid-template-columns: 28px 1fr; }
             .w-arrow { display: none; }
             .contact-grid { grid-template-columns: 1fr; }
             .foot-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ─── boot sequence ────────────────────────────── */
+        body.is-booting { overflow: hidden; }
+        body.is-booting #cursor { opacity: 0 !important; }
+
+        #boot {
+            position: fixed;
+            inset: 0;
+            z-index: 10001;
+            background: var(--bg);
+            color: var(--fg);
+            font-family: "VT323", "IBM Plex Mono", ui-monospace, monospace;
+            font-size: clamp(15px, 1.7vw, 19px);
+            line-height: 1.55;
+            padding: clamp(20px, 4vw, 56px);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(14px, 2.4vh, 28px);
+        }
+        .boot-system {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            opacity: 0;
+            animation: bootIn 0.3s 0.05s forwards;
+        }
+        .boot-wm-canvas {
+            display: block;
+            width: 100%;
+            max-width: clamp(280px, 90vw, 1200px);
+            height: clamp(56px, 14vw, 220px);
+            margin: 0;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+        .boot-status {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-variant-numeric: tabular-nums;
+        }
+        .boot-status li {
+            white-space: pre;
+            opacity: 0;
+            animation: bootIn 0.18s forwards;
+        }
+        .boot-badge {
+            display: inline-block;
+            padding: 0 5px;
+            margin-left: 4px;
+            font-weight: 600;
+        }
+        .boot-badge.ok { background: #000; color: #fff; }
+        .boot-badge.fail {
+            background: #fff;
+            color: #000;
+            border: 1px solid #000;
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .boot-prompt {
+            margin-top: clamp(8px, 1.5vh, 18px);
+            font-size: clamp(11px, 1.3vw, 14px);
+            opacity: 0;
+            animation: bootIn 0.2s forwards;
+        }
+        .boot-caret {
+            display: inline-block;
+            width: 0.55em;
+            height: 1.05em;
+            background: #000;
+            vertical-align: -0.18em;
+            margin-left: 4px;
+            animation: bootBlink 0.9s steps(2, start) infinite;
+        }
+        .boot-veil {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'><rect width='1' height='1' x='0' y='0' fill='%23000'/><rect width='1' height='1' x='4' y='2' fill='%23000'/><rect width='1' height='1' x='2' y='4' fill='%23000'/><rect width='1' height='1' x='6' y='6' fill='%23000'/><rect width='1' height='1' x='1' y='3' fill='%23000'/><rect width='1' height='1' x='5' y='5' fill='%23000'/><rect width='1' height='1' x='3' y='7' fill='%23000'/><rect width='1' height='1' x='7' y='1' fill='%23000'/></svg>");
+            background-size: 8px 8px;
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.45s cubic-bezier(0.6, 0, 0.4, 1);
+        }
+        .boot-veil.is-up { transform: scaleY(1); }
+        #boot.is-fading { opacity: 0; transition: opacity 0.28s 0.05s ease-out; }
+
+        @keyframes bootIn { to { opacity: 1; } }
+        @keyframes bootBlink { to { opacity: 0; } }
+
+        /* ─── CRT atmosphere (whisper) ─────────────────── */
+        .crt-scanlines, .crt-vignette {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9998;
+        }
+        .crt-scanlines {
+            background: repeating-linear-gradient(0deg, transparent 0 2px, #000 2px 3px);
+            opacity: 0.10;
+        }
+        /* CRT bulge — strong elliptical vignette (corners darker, "tube TV"
+         * curvature illusion) plus a faint inner highlight that hints at
+         * screen reflection. Combined with scanlines this reads as CRT. */
+        .crt-vignette {
+            background:
+                radial-gradient(ellipse 75% 60% at 50% 50%,
+                    transparent 35%,
+                    rgba(0,0,0,0.18) 75%,
+                    rgba(0,0,0,0.45) 100%),
+                radial-gradient(ellipse 60% 40% at 50% 35%,
+                    rgba(255,255,255,0.06),
+                    transparent 70%);
+        }
+
+        /* ─── ascii dividers ───────────────────────────── */
+        .ascii-divider {
+            font-family: "VT323", monospace;
+            font-size: clamp(14px, 1.6vw, 20px);
+            line-height: 1;
+            text-align: center;
+            padding: 14px var(--pad);
+            color: #000;
+            user-select: none;
+            white-space: nowrap;
+            overflow: hidden;
+            letter-spacing: 0;
+            opacity: 0.65;
+        }
+
+        /* ─── glitch typography ────────────────────────── */
+        .wordmark > span.glyph {
+            display: inline-block;
+            position: relative;
+        }
+        .wordmark > span.glyph.is-glitching::before,
+        .wordmark > span.glyph.is-glitching::after {
+            content: attr(data-char);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            color: #000;
+        }
+        .wordmark > span.glyph.is-glitching::before {
+            transform: translateX(-3.5px);
+            clip-path: inset(0 0 55% 0);
+        }
+        .wordmark > span.glyph.is-glitching::after {
+            transform: translateX(4px);
+            clip-path: inset(50% 0 0 0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .wordmark > span.glyph.is-glitching::before,
+            .wordmark > span.glyph.is-glitching::after { display: none; }
+            .boot-system, .boot-status li, .boot-prompt { animation: none; opacity: 1; }
+            .boot-caret, .crt-scanlines { animation: none; }
         }
     </style>
 </head>
@@ -602,22 +816,10 @@
 
     <!-- ─── ticker ───────────────────────────────────── -->
     <div class="ticker" aria-hidden="true">
-        <div class="ticker-track">
-            <span>★ portfolio v0.2 — 2026</span>
-            <span>★ now playing — balatro</span>
-            <span>★ now reading — a theory of fun</span>
-            <span>★ açığım — projeler için yazın</span>
-            <span>★ istanbul / remote</span>
-            <span>★ available for collabs</span>
-            <!-- repeat for seamless loop -->
-            <span>★ portfolio v0.2 — 2026</span>
-            <span>★ now playing — balatro</span>
-            <span>★ now reading — a theory of fun</span>
-            <span>★ açığım — projeler için yazın</span>
-            <span>★ istanbul / remote</span>
-            <span>★ available for collabs</span>
-        </div>
+        <div class="ticker-track" id="ticker-track"></div>
     </div>
+
+    <div class="ascii-divider" aria-hidden="true">░▒▓██▓▒░░▒▓██▓▒░░▒▓██▓▒░░▒▓██▓▒░░▒▓██▓▒░░▒▓██▓▒░░▒▓██▓▒░░▒▓██▓▒░░▒▓██▓▒░░▒▓██▓▒░░▒▓██▓▒░░▒▓██▓▒░</div>
 
     <!-- ─── main / panels ────────────────────────────── -->
     <main aria-live="polite">
@@ -674,6 +876,8 @@
 
     </main>
 
+    <div class="ascii-divider" aria-hidden="true">╋━━━━━━━━━━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━━━━━━━━━━╋</div>
+
     <!-- ─── footer ───────────────────────────────────── -->
     <footer class="foot">
         <div class="foot-grid">
@@ -687,7 +891,7 @@
             </div>
             <div>
                 <span class="lbl">colophon</span>
-                <p>Set in Archivo Black &amp; IBM Plex Mono.</p>
+                <p>Set in Archivo Black &amp; VT323.</p>
                 <p>Vanilla HTML / CSS / JS. No frameworks were harmed.</p>
             </div>
             <div>
@@ -814,6 +1018,7 @@
                         const count = String(valid.length).padStart(2, "0");
                         worksMeta.textContent = `${range}${count} entries`;
                     }
+                    return true;
                 } catch (err) {
                     worksEl.innerHTML = `
                         <li class="works-error">
@@ -824,10 +1029,12 @@
                         </li>
                     `;
                     if (worksMeta) worksMeta.textContent = "offline";
+                    return false;
                 }
             }
 
-            loadProjects();
+            const loaders = {};
+            loaders.projects = loadProjects();
 
             // ─── bio loader ───────────────────────────
             // Reads content/bio.json. Lead supports **emphasis**
@@ -852,11 +1059,13 @@
                         .map(item => `<li>${escapeHtml(item)}</li>`)
                         .join("");
                     if (d.creed_label) creedLbl.textContent = d.creed_label;
+                    return true;
                 } catch {
                     lead.innerHTML = `<small style="font-size:13px;letter-spacing:0.18em;text-transform:uppercase;opacity:0.6;">bio could not be loaded — needs local server</small>`;
+                    return false;
                 }
             }
-            loadBio();
+            loaders.bio = loadBio();
 
             // ─── academics loader ─────────────────────
             const acadEl = document.getElementById("acad");
@@ -886,6 +1095,7 @@
                         const count = String(entries.length).padStart(2, "0");
                         acadMeta.textContent = `${range}${count} entries`;
                     }
+                    return true;
                 } catch {
                     acadEl.innerHTML = `
                         <li class="works-error">
@@ -894,9 +1104,10 @@
                         </li>
                     `;
                     if (acadMeta) acadMeta.textContent = "offline";
+                    return false;
                 }
             }
-            loadAcademics();
+            loaders.academics = loadAcademics();
 
             // ─── contact loader (panel + footer) ──────
             const contactMail = document.getElementById("contact-mail");
@@ -930,13 +1141,35 @@
                     footLinks.innerHTML = links.map(l => `
                         <a href="${escapeHtml(l.url)}" target="_blank" rel="noopener">${escapeHtml(l.label)} — ${escapeHtml(l.handle)}</a>
                     `).join("");
+                    return true;
                 } catch {
                     contactMail.textContent = "contact data offline — needs local server";
                     if (contactMeta) contactMeta.textContent = "offline";
                     footMail.textContent = "—";
+                    return false;
                 }
             }
-            loadContact();
+            loaders.contact = loadContact();
+
+            // ─── ticker loader ────────────────────────
+            // Reads content/ticker.json items array. Each item gets a ★
+            // prefix and is appended twice for seamless marquee loop.
+            // Decorative — not gated on the boot.
+            (async function loadTicker() {
+                const track = document.getElementById("ticker-track");
+                if (!track) return;
+                try {
+                    const r = await fetch("content/ticker.json", { cache: "no-cache" });
+                    if (!r.ok) throw new Error("ticker missing");
+                    const d = await r.json();
+                    const items = (d.items || []).filter(Boolean);
+                    if (!items.length) throw new Error("empty");
+                    const html = items.map(t => `<span>★ ${escapeHtml(t)}</span>`).join("");
+                    track.innerHTML = html + html; // duplicate for seamless loop
+                } catch {
+                    track.innerHTML = `<span>★ erkush34</span>`.repeat(8);
+                }
+            })();
 
             // ─── custom cursor (square · mix-blend) ───
             // Hides native cursor, follows mouse with a square
@@ -1096,6 +1329,270 @@
             window.addEventListener("scroll", requestTick, { passive: true });
             window.addEventListener("resize", requestTick);
             onScroll();
+
+            // ─── CRT atmosphere (whisper) ─────────────
+            // Static scanline + vignette overlays. No JS needed
+            // beyond appending the divs once.
+            (function initCRT() {
+                const sl = document.createElement("div");
+                sl.className = "crt-scanlines";
+                sl.setAttribute("aria-hidden", "true");
+                const vg = document.createElement("div");
+                vg.className = "crt-vignette";
+                vg.setAttribute("aria-hidden", "true");
+                document.body.append(sl, vg);
+            })();
+
+            // ─── glitch typography ────────────────────
+            // Splits the wordmark into per-character spans, then:
+            //   · scrambles the active panel's heading on tab click
+            //   · ambient: every 25-40s, slices the bottom half of
+            //     one random wordmark char to the right for 120ms.
+            // Both effects respect prefers-reduced-motion.
+            (function initGlitch() {
+                const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+                const wm = document.querySelector(".wordmark");
+                console.log("[glitch] init — wordmark found:", !!wm, "reduced motion:", reduced);
+                if (!wm) {
+                    console.warn("[glitch] no .wordmark element — aborting");
+                    return;
+                }
+
+                // split wordmark into per-char spans
+                const text = wm.textContent;
+                wm.textContent = "";
+                const glyphs = [];
+                for (const ch of text) {
+                    const s = document.createElement("span");
+                    s.className = "glyph";
+                    s.textContent = ch;
+                    s.setAttribute("data-char", ch);
+                    wm.appendChild(s);
+                    glyphs.push(s);
+                }
+                console.log("[glitch] split into", glyphs.length, "glyphs");
+
+                // expose manual triggers for debugging from console
+                window.__glitch = {
+                    word: () => glyphs[Math.floor(Math.random() * glyphs.length)]
+                        .classList.add("is-glitching") || setTimeout(() => glyphs.forEach(g => g.classList.remove("is-glitching")), 250),
+                    scramble: (key = "work") => {
+                        const h2 = document.querySelector(`[data-panel="${key}"] .panel-head h2`);
+                        if (h2) scrambleHeading(h2);
+                    }
+                };
+
+                // tab scramble — slower (25 ticks × 40ms = 1000ms) so it
+                // outlasts the panel fade-in (~250ms) and is clearly visible
+                const SCRAMBLE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#%/\\<>+*=";
+                function scrambleHeading(h2) {
+                    if (reduced) return;
+                    const orig = h2.textContent;
+                    const L = orig.length;
+                    const TOTAL = 25;
+                    let tick = 0;
+                    const id = setInterval(() => {
+                        tick++;
+                        let out = "";
+                        for (let i = 0; i < L; i++) {
+                            const settle = Math.ceil((i + 1) * TOTAL / L);
+                            if (tick >= settle || orig[i] === " ") {
+                                out += orig[i];
+                            } else {
+                                out += SCRAMBLE[Math.floor(Math.random() * SCRAMBLE.length)];
+                            }
+                        }
+                        h2.textContent = out;
+                        if (tick >= TOTAL) {
+                            clearInterval(id);
+                            h2.textContent = orig;
+                        }
+                    }, 40);
+                }
+                document.querySelectorAll(".nav button").forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        const key = btn.dataset.tab;
+                        const h2 = document.querySelector(`[data-panel="${key}"] .panel-head h2`);
+                        if (h2) scrambleHeading(h2);
+                    });
+                });
+
+                // ambient wordmark slice — first fires at 2s so it's visible
+                // immediately after boot; subsequent at 8-15s random.
+                // CSS adds two ghost copies (top portion shifted left, bottom
+                // portion shifted right) for a "bad signal" feel.
+                if (!reduced) {
+                    let firstFire = true;
+                    function tickAmbient() {
+                        const delay = firstFire ? 2000 : (8000 + Math.random() * 7000);
+                        firstFire = false;
+                        setTimeout(() => {
+                            const g = glyphs[Math.floor(Math.random() * glyphs.length)];
+                            g.classList.add("is-glitching");
+                            console.log("[glitch] ambient fire on glyph:", g.dataset.char);
+                            setTimeout(() => {
+                                g.classList.remove("is-glitching");
+                                tickAmbient();
+                            }, 180);
+                        }, delay);
+                    }
+                    tickAmbient();
+                }
+            })();
+
+            // ─── boot sequence ────────────────────────
+            // First visit per session: BBS-style boot screen.
+            // Phases: system line → wordmark reveal → status lines
+            // wired to real fetch promises → blinking prompt → dither
+            // veil grows up → fade out → remove. Skippable via any
+            // keydown/click before the wipe phase.
+            (async function initBoot() {
+                const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+                if (sessionStorage.getItem("erkush34.booted") === "1" || reduced) {
+                    sessionStorage.setItem("erkush34.booted", "1");
+                    return;
+                }
+
+                document.body.classList.add("is-booting");
+
+                const boot = document.createElement("div");
+                boot.id = "boot";
+                boot.innerHTML = `
+                    <div class="boot-system">system: erkush34 v0.2 // crt monitor terminal</div>
+                    <canvas class="boot-wm-canvas" id="boot-wm-canvas"></canvas>
+                    <ul class="boot-status" aria-live="polite"></ul>
+                    <div class="boot-prompt" hidden>&gt; click to start<span class="boot-caret"></span></div>
+                    <div class="boot-veil" aria-hidden="true"></div>
+                `;
+                document.body.appendChild(boot);
+
+                // dither-reveal the wordmark on canvas
+                // Pre-renders "erkush34" black text, then per frame redraws
+                // pixels masked by Bayer 8x8 threshold; threshold lowers
+                // with progress so density grows from sparse → solid.
+                (function revealWordmark() {
+                    const cv = boot.querySelector("#boot-wm-canvas");
+                    if (!cv) return;
+                    cv.width = 600;
+                    cv.height = 110;
+                    const ctx = cv.getContext("2d");
+
+                    // pre-render text to source canvas
+                    const src = document.createElement("canvas");
+                    src.width = cv.width;
+                    src.height = cv.height;
+                    const sctx = src.getContext("2d");
+                    sctx.fillStyle = "#000";
+                    sctx.textBaseline = "alphabetic";
+
+                    // fit text to width
+                    let fs = 100;
+                    sctx.font = `${fs}px "Archivo Black", system-ui, sans-serif`;
+                    let w = sctx.measureText("erkush34").width;
+                    if (w > cv.width * 0.98) {
+                        fs = Math.floor(fs * (cv.width * 0.98) / w);
+                        sctx.font = `${fs}px "Archivo Black", system-ui, sans-serif`;
+                    }
+                    // draw with negative letter-spacing matching the live wordmark
+                    const spacing = -fs * 0.055;
+                    let cur = 0;
+                    for (const ch of "erkush34") {
+                        const cw = sctx.measureText(ch).width;
+                        sctx.fillText(ch, cur, cv.height * 0.85);
+                        cur += cw + spacing;
+                    }
+                    const srcData = sctx.getImageData(0, 0, cv.width, cv.height);
+
+                    const DURATION = 950;
+                    const start = performance.now();
+                    function frame(now) {
+                        const t = Math.min(1, (now - start) / DURATION);
+                        // ease-out
+                        const p = 1 - Math.pow(1 - t, 2);
+                        const out = ctx.createImageData(cv.width, cv.height);
+                        for (let y = 0; y < cv.height; y++) {
+                            for (let x = 0; x < cv.width; x++) {
+                                const i = (y * cv.width + x) * 4;
+                                if (srcData.data[i + 3] === 0) continue;
+                                const bayer = (BAYER_8[y & 7][x & 7] + 0.5) / 64;
+                                if (bayer >= (1 - p)) {
+                                    out.data[i] = 0;
+                                    out.data[i + 1] = 0;
+                                    out.data[i + 2] = 0;
+                                    out.data[i + 3] = 255;
+                                }
+                            }
+                        }
+                        ctx.putImageData(out, 0, 0);
+                        if (t < 1) requestAnimationFrame(frame);
+                    }
+                    // wait one frame so the boot DOM has painted
+                    requestAnimationFrame(() => requestAnimationFrame(frame));
+                })();
+
+                // skip handling — click anywhere on boot to skip to wipe
+                let skipped = false;
+                boot.addEventListener("click", () => { skipped = true; }, { once: true });
+                boot.style.cursor = "pointer";
+
+                const wait = (ms) => new Promise(r => setTimeout(r, ms));
+                const waitOrSkip = async (ms) => {
+                    const t0 = Date.now();
+                    while (!skipped && Date.now() - t0 < ms) {
+                        await wait(Math.min(40, ms - (Date.now() - t0)));
+                    }
+                };
+
+                const statusEl = boot.querySelector(".boot-status");
+                const promptEl = boot.querySelector(".boot-prompt");
+
+                const lines = [
+                    { prefix: "> checking memory.............. 8mb",  ready: wait(200).then(() => true) },
+                    { prefix: "> loading projects............. ",     ready: loaders.projects },
+                    { prefix: "> loading bio.................. ",     ready: loaders.bio },
+                    { prefix: "> loading academics............ ",     ready: loaders.academics },
+                    { prefix: "> loading contact.............. ",     ready: loaders.contact }
+                ];
+
+                // wait for hero wordmark reveal animation to play, then status lines
+                await waitOrSkip(1300);
+
+                for (const line of lines) {
+                    if (skipped) break;
+                    const li = document.createElement("li");
+                    li.textContent = line.prefix;
+                    statusEl.appendChild(li);
+                    await waitOrSkip(50);
+
+                    // wait for fetch (with 8s ceiling)
+                    const ok = await Promise.race([
+                        line.ready,
+                        wait(8000).then(() => null)
+                    ]);
+                    const badge = document.createElement("span");
+                    badge.className = `boot-badge ${ok === false ? "fail" : "ok"}`;
+                    badge.textContent = ok === false ? "fail" : "ok";
+                    li.appendChild(badge);
+
+                    await waitOrSkip(180);
+                }
+
+                // prompt
+                if (!skipped) {
+                    promptEl.hidden = false;
+                    await waitOrSkip(550);
+                }
+
+                // wipe out — dither veil grows up, then fade
+                const veil = boot.querySelector(".boot-veil");
+                veil.classList.add("is-up");
+                await wait(420);
+                boot.classList.add("is-fading");
+                await wait(320);
+                boot.remove();
+                document.body.classList.remove("is-booting");
+                sessionStorage.setItem("erkush34.booted", "1");
+            })();
         })();
     </script>
 </body>

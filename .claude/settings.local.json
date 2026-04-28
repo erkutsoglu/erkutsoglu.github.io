@@ -14,7 +14,9 @@
       "Bash(curl -s -o /dev/null -w \"bio.json: %{http_code}\\\\n\" http://127.0.0.1:8765/content/bio.json)",
       "Bash(curl -s -o /dev/null -w \"academics.json: %{http_code}\\\\n\" http://127.0.0.1:8765/content/academics.json)",
       "Bash(curl -s -o /dev/null -w \"contact.json: %{http_code}\\\\n\" http://127.0.0.1:8765/content/contact.json)",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(curl -s -o /dev/null -w \"ticker.json: %{http_code}\\\\n\" http://127.0.0.1:8765/content/ticker.json)",
+      "Bash(curl -s http://127.0.0.1:8765/content/ticker.json)"
     ]
   }
 }
