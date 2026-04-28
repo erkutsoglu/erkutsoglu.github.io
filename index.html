@@ -3,449 +3,848 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>erkutsoglu | Game Designer</title>
+    <title>erkush34 — game designer</title>
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --bg-top: #000000;
-            --bg-bottom: #ffffff;
-            --ink: #000000;
-            --ink-soft: #000000;
-            --border: transparent;
-            --border-soft: transparent;
+            --bg: #ffffff;
+            --fg: #000000;
+            --pad: clamp(16px, 2.6vw, 36px);
+            --rule: 1.5px solid #000;
+            --thin: 1px solid #000;
         }
 
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-        }
-
+        *, *::before, *::after { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; }
         body {
-            margin: 0;
-            min-height: 100vh;
-            background-color: #ffffff;
-            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            color: var(--ink);
+            background: var(--bg);
+            color: var(--fg);
+            font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: geometricPrecision;
+            overflow-x: hidden;
         }
 
-        .page {
-            min-height: 100vh;
-            display: flex;
-            align-items: stretch;
-            justify-content: stretch;
-        }
+        a { color: inherit; text-decoration: none; }
+        button { font: inherit; color: inherit; }
 
-        .frame {
-            width: 100%;
-            min-height: 100vh;
-            border-radius: 0;
-            display: flex;
-            flex-direction: column;
-            background-color: #ffffff;
-        }
+        /* ─── selection ────────────────────────────────── */
+        ::selection { background: #000; color: #fff; }
 
-        .hero-bar {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 32px 24px 24px;
-            border-bottom: none;
-            text-align: center;
-            background-color: #000000;
-        }
-
-        .hero-id {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .hero-name {
-            margin: 0;
-            font-family: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            font-weight: 700;
-            font-size: 80px;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: #ffffff;
-        }
-
-        .hero-role {
-            margin: 8px 0 0;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.26em;
-            color: #ffffff;
-        }
-
-        .hero-tabs {
-            margin-top: 28px;
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-            max-width: 880px;
-            font-family: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-            font-size: 40px;
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-        }
-
-        .hero-tab {
-            border: none;
-            background: transparent;
-            padding: 12px 0;
-            cursor: pointer;
-            color: #ffffff;
-            border-radius: 0;
-            flex: 1 1 0;
-            text-align: center;
-        }
-
-        .hero-tab.is-active {
-            background-color: #ffffff;
-            color: #000000;
-        }
-
-        .main {
-            flex: 1;
-            background-color: #ffffff;
-        }
-
-        .content {
-            padding: 72px 24px 40px;
-            max-width: 840px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .projects-grid {
+        /* ─── top bar ──────────────────────────────────── */
+        .bar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 24px;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            padding: 14px var(--pad);
+            background: var(--bg);
+            border-bottom: var(--rule);
         }
+        .bar-l { display: flex; align-items: center; gap: 12px; }
+        .bar-r { display: flex; align-items: center; gap: 18px; justify-self: end; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+        .brand { font-weight: 600; letter-spacing: 0.02em; font-size: 13px; }
+        .brand sup { font-size: 9px; vertical-align: super; opacity: 0.6; margin-left: 2px; letter-spacing: 0; }
 
-        .project-card {
-            border: 2px solid #000000;
-            background-color: #ffffff;
-            padding: 20px 20px 18px;
+        .nav {
             display: flex;
-            flex-direction: column;
-            gap: 18px;
+            gap: 2px;
+            justify-self: center;
+            border: var(--thin);
+            padding: 2px;
         }
-
-        .project-card-image {
-            border: 2px solid #000000;
-            background-color: #ffffff;
-            height: 220px;
-        }
-
-        .project-card-body {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .project-card-title {
-            margin: 0;
-            font-family: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            font-weight: 700;
-            font-size: 20px;
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-        }
-
-        .project-card-meta {
-            margin: 0;
-            font-family: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        .nav button {
+            border: 0;
+            background: transparent;
+            cursor: pointer;
+            padding: 6px 14px;
             font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 0.18em;
+            transition: background 0.15s, color 0.15s;
         }
+        .nav button:hover { background: #000; color: #fff; }
+        .nav button.is-active { background: #000; color: #fff; }
 
-        .project-card-text {
-            margin: 4px 0 0;
-            font-size: 15px;
-            line-height: 1.6;
+        .status { display: inline-flex; align-items: center; gap: 7px; }
+        .dot {
+            width: 7px; height: 7px;
+            background: #000;
+            border-radius: 50%;
+            animation: pulse 1.4s ease-in-out infinite;
         }
+        @keyframes pulse {
+            0%, 70% { opacity: 1; transform: scale(1); }
+            85% { opacity: 0.2; transform: scale(0.7); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .clock { font-variant-numeric: tabular-nums; }
 
-        .project-card-action {
-            margin-top: 12px;
-            align-self: flex-start;
-            padding: 10px 22px;
-            border: 2px solid #000000;
-            background-color: #000000;
-            color: #ffffff;
-            font-family: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-            font-size: 12px;
+        /* ─── hero ─────────────────────────────────────── */
+        .hero {
+            padding: clamp(28px, 6vh, 64px) var(--pad) clamp(20px, 3vh, 32px);
+            border-bottom: var(--rule);
+            position: relative;
+        }
+        .hero-top {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 24px;
+            font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 0.2em;
-            cursor: pointer;
+            margin-bottom: clamp(20px, 4vh, 56px);
+            align-items: center;
+        }
+        .hero-top span:nth-child(2) {
+            text-align: center;
+            opacity: 0.5;
+            letter-spacing: 0.4em;
         }
 
-        .project-card-action span:last-child {
-            margin-left: 10px;
-        }
-
-        .panel {
-            display: none;
-        }
-
-        .panel.is-active {
+        .wordmark {
             display: block;
+            margin: 0;
+            font-family: "Archivo Black", system-ui, sans-serif;
+            font-weight: 400;
+            font-size: clamp(76px, 24vw, 340px);
+            line-height: 0.82;
+            letter-spacing: -0.055em;
+            text-transform: lowercase;
+            color: #000;
+            user-select: none;
         }
 
-        .panel-label {
-            font-family: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        .hero-foot {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 24px;
+            margin-top: clamp(28px, 5vh, 56px);
             font-size: 11px;
             text-transform: uppercase;
-            letter-spacing: 0.16em;
-            color: var(--ink-soft);
-            margin-bottom: 10px;
+            letter-spacing: 0.18em;
+            border-top: var(--thin);
+            padding-top: 16px;
+        }
+        .hero-foot div { display: flex; flex-direction: column; gap: 4px; }
+        .hero-foot .lbl { opacity: 0.45; font-size: 10px; letter-spacing: 0.22em; }
+
+        /* ─── ticker ───────────────────────────────────── */
+        .ticker {
+            border-bottom: var(--rule);
+            background: #000;
+            color: #fff;
+            overflow: hidden;
+            padding: 9px 0;
+        }
+        .ticker-track {
+            display: flex;
+            gap: 56px;
+            white-space: nowrap;
+            animation: ticker 38s linear infinite;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            width: max-content;
+        }
+        .ticker-track span { flex-shrink: 0; }
+        @keyframes ticker {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
         }
 
-        .panel-title {
+        /* ─── panels (tab content) ─────────────────────── */
+        .panel { display: none; animation: fadein 0.25s ease-out; }
+        .panel.is-active { display: block; }
+        @keyframes fadein {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .panel-head {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 28px;
+            align-items: baseline;
+            padding: 28px var(--pad) 24px;
+            border-bottom: var(--rule);
+        }
+        .ph-num, .ph-meta {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            opacity: 0.7;
+        }
+        .panel-head h2 {
             margin: 0;
-            font-size: 0;
-            line-height: 0;
-            text-indent: -9999px;
-            border: 0;
-            padding: 0;
+            font-family: "Archivo Black", sans-serif;
+            font-weight: 400;
+            font-size: clamp(28px, 4.6vw, 60px);
+            letter-spacing: -0.025em;
+            text-transform: lowercase;
+            line-height: 0.95;
         }
 
-        .panel-text {
+        /* ─── work list ────────────────────────────────── */
+        .works { list-style: none; margin: 0; padding: 0; }
+        .work {
+            display: grid;
+            grid-template-columns: 56px minmax(0, 1.4fr) minmax(0, 1fr) auto;
+            gap: 24px;
+            align-items: center;
+            padding: 22px var(--pad);
+            border-bottom: var(--thin);
+            cursor: pointer;
+            transition: background 0.18s, color 0.18s, padding 0.18s;
+            position: relative;
+        }
+        .work:hover {
+            background: #000;
+            color: #fff;
+            padding-left: calc(var(--pad) + 8px);
+        }
+        .work:hover .w-arrow { transform: translate(6px, -6px); }
+        .work:hover .w-meta { opacity: 1; }
+
+        .w-num {
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            opacity: 0.7;
+        }
+        .w-body { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+        .w-title {
             margin: 0;
-            font-size: 15px;
-            line-height: 1.7;
-            color: var(--ink-soft);
+            font-family: "Archivo Black", sans-serif;
+            font-weight: 400;
+            font-size: clamp(20px, 2.6vw, 32px);
+            letter-spacing: -0.025em;
+            text-transform: lowercase;
+            line-height: 1;
+        }
+        .w-desc { margin: 0; font-size: 13px; opacity: 0.65; line-height: 1.5; max-width: 52ch; }
+        .w-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            opacity: 0.75;
+            transition: opacity 0.18s;
+        }
+        .w-meta span { white-space: nowrap; }
+        .w-arrow {
+            font-family: "Archivo Black", sans-serif;
+            font-size: 24px;
+            line-height: 1;
+            transition: transform 0.22s ease;
         }
 
-        .panel-text strong {
-            color: var(--ink);
+        /* ─── bio ──────────────────────────────────────── */
+        .bio {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(40px, 6vw, 96px);
+            padding: clamp(40px, 7vh, 96px) var(--pad);
+            border-bottom: var(--thin);
+        }
+        .bio-lead {
+            margin: 0;
+            font-family: "Archivo Black", sans-serif;
+            font-weight: 400;
+            font-size: clamp(28px, 3.6vw, 48px);
+            letter-spacing: -0.03em;
+            text-transform: lowercase;
+            line-height: 1.05;
+        }
+        .bio-lead em {
+            font-style: normal;
+            background: #000;
+            color: #fff;
+            padding: 0 8px;
+        }
+        .bio-body { font-size: 14px; line-height: 1.75; }
+        .bio-body p { margin: 0 0 1.1em; }
+        .bio-body p:last-child { margin-bottom: 0; }
+
+        .creed {
+            border-top: var(--rule);
+            padding: clamp(40px, 6vh, 72px) var(--pad);
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 40px;
+        }
+        .creed-lbl {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.24em;
+            opacity: 0.5;
+        }
+        .creed-list { list-style: none; padding: 0; margin: 0; counter-reset: c; }
+        .creed-list li {
+            counter-increment: c;
+            display: grid;
+            grid-template-columns: 36px 1fr;
+            gap: 20px;
+            padding: 14px 0;
+            border-bottom: var(--thin);
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        .creed-list li:first-child { padding-top: 0; }
+        .creed-list li:last-child { border-bottom: 0; padding-bottom: 0; }
+        .creed-list li::before {
+            content: counter(c, decimal-leading-zero);
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            opacity: 0.5;
+            padding-top: 4px;
         }
 
+        /* ─── academics ────────────────────────────────── */
+        .acad { list-style: none; margin: 0; padding: 0; }
+        .acad li {
+            display: grid;
+            grid-template-columns: 80px minmax(0, 1fr) 220px;
+            gap: 28px;
+            align-items: baseline;
+            padding: 24px var(--pad);
+            border-bottom: var(--thin);
+            transition: background 0.16s, color 0.16s;
+        }
+        .acad li:hover { background: #000; color: #fff; }
+        .acad-yr { font-size: 13px; font-weight: 600; letter-spacing: 0.04em; }
+        .acad-body { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+        .acad-title {
+            margin: 0;
+            font-family: "Archivo Black", sans-serif;
+            font-weight: 400;
+            font-size: clamp(16px, 1.6vw, 22px);
+            text-transform: lowercase;
+            letter-spacing: -0.015em;
+            line-height: 1.15;
+        }
+        .acad-note { margin: 0; font-size: 12px; opacity: 0.7; line-height: 1.55; }
+        .acad-place {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            text-align: right;
+            opacity: 0.75;
+        }
+
+        /* ─── contact ──────────────────────────────────── */
+        .contact {
+            padding: clamp(48px, 8vh, 120px) var(--pad);
+            border-bottom: var(--thin);
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: clamp(32px, 5vh, 64px);
+        }
+        .contact-mail {
+            font-family: "Archivo Black", sans-serif;
+            font-size: clamp(36px, 7vw, 110px);
+            letter-spacing: -0.04em;
+            text-transform: lowercase;
+            line-height: 0.95;
+            display: inline-block;
+            border-bottom: 4px solid #000;
+            padding-bottom: 4px;
+            transition: background 0.18s, color 0.18s;
+            align-self: start;
+            justify-self: start;
+        }
+        .contact-mail:hover { background: #000; color: #fff; }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+            border-top: var(--thin);
+            padding-top: 32px;
+        }
+        .contact-grid a {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 12px 14px;
+            border: var(--thin);
+            transition: background 0.15s, color 0.15s;
+        }
+        .contact-grid a:hover { background: #000; color: #fff; }
+        .contact-grid a span:first-child {
+            font-size: 9px;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            opacity: 0.6;
+        }
+        .contact-grid a span:last-child {
+            font-family: "Archivo Black", sans-serif;
+            font-size: 18px;
+            letter-spacing: -0.01em;
+            text-transform: lowercase;
+        }
+
+        /* ─── footer ───────────────────────────────────── */
+        .foot {
+            border-top: var(--rule);
+            padding: clamp(32px, 5vh, 56px) var(--pad) 0;
+        }
+        .foot-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.2fr 1fr;
+            gap: 40px;
+            padding-bottom: clamp(32px, 5vh, 56px);
+        }
+        .foot-grid .lbl {
+            display: block;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.26em;
+            opacity: 0.5;
+            margin-bottom: 12px;
+        }
+        .foot-grid p, .foot-grid a {
+            display: block;
+            font-size: 13px;
+            line-height: 1.55;
+            margin: 0 0 4px;
+        }
+        .foot-grid a:hover { background: #000; color: #fff; padding: 0 4px; margin: 0 -4px 4px; }
+        .foot-grid p { opacity: 0.7; }
+
+        .foot-mark {
+            border-top: var(--rule);
+            padding: 14px 0 18px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.24em;
+            opacity: 0.7;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .foot-wordmark {
+            font-family: "Archivo Black", sans-serif;
+            font-size: clamp(60px, 24vw, 340px);
+            line-height: 0.82;
+            letter-spacing: -0.055em;
+            text-transform: lowercase;
+            margin: 8px 0 -10px;
+            user-select: none;
+        }
+
+        /* ─── responsive ───────────────────────────────── */
         @media (max-width: 900px) {
-            .frame {
-                min-height: auto;
+            .bar {
+                grid-template-columns: 1fr auto;
+                gap: 12px;
             }
+            .bar-r { display: none; }
+            .nav { justify-self: end; }
+            .hero-foot { grid-template-columns: 1fr; gap: 12px; }
+            .bio { grid-template-columns: 1fr; gap: 32px; }
+            .creed { grid-template-columns: 1fr; gap: 24px; }
+            .work { grid-template-columns: 36px 1fr auto; gap: 16px; padding: 18px var(--pad); }
+            .w-meta { display: none; }
+            .acad li { grid-template-columns: 60px 1fr; }
+            .acad-place { display: none; }
+            .contact-grid { grid-template-columns: 1fr 1fr; }
+            .foot-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
         }
 
-        @media (max-width: 640px) {
-            .hero-name {
-                font-size: 22px;
-                letter-spacing: 0.18em;
-            }
-
-            .hero-tabs {
-                width: 100%;
-                justify-content: space-between;
-            }
+        @media (max-width: 520px) {
+            .nav button { padding: 5px 8px; font-size: 10px; letter-spacing: 0.14em; }
+            .panel-head { grid-template-columns: 1fr; gap: 10px; }
+            .ph-meta { text-align: left; }
+            .work { grid-template-columns: 28px 1fr; }
+            .w-arrow { display: none; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .foot-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <div class="page">
-        <div class="frame">
-            <header class="hero-bar">
-                <div class="hero-id">
-                    <h1 class="hero-name">Erkut Suleymanoglu</h1>
-                    <p class="hero-role">game designer</p>
-                </div>
-                <nav class="hero-tabs" aria-label="Bölümler">
-                    <button class="hero-tab is-active" data-section-target="projects">Projects</button>
-                    <button class="hero-tab" data-section-target="bio">Bio</button>
-                    <button class="hero-tab" data-section-target="academics">Academics</button>
-                </nav>
-            </header>
 
-            <main class="main" aria-live="polite">
-                <section class="content">
-                    <article class="panel is-active" data-section="projects" aria-label="Projects">
-                        <div class="projects-grid">
-                            <div class="project-card">
-                                <div class="project-card-image"></div>
-                                <div class="project-card-body">
-                                    <h3 class="project-card-title">Project Title</h3>
-                                    <p class="project-card-meta">platform · role · year</p>
-                                    <p class="project-card-text">
-                                        Kısa açıklama alanı. Bu satırda oyunun türü, temel fikri
-                                        ve tasarım odağın (örneğin ekonomi, tempo, sistemler) özetlenecek.
-                                    </p>
-                                </div>
-                                <button class="project-card-action" type="button">
-                                    <span>OPEN PROJECT</span>
-                                    <span>&gt;</span>
-                                </button>
-                            </div>
-                            <div class="project-card">
-                                <div class="project-card-image"></div>
-                                <div class="project-card-body">
-                                    <h3 class="project-card-title">Project Title</h3>
-                                    <p class="project-card-meta">platform · role · year</p>
-                                    <p class="project-card-text">
-                                        Kısa açıklama alanı. Bu satırda oyunun türü, temel fikri
-                                        ve tasarım odağın (örneğin ekonomi, tempo, sistemler) özetlenecek.
-                                    </p>
-                                </div>
-                                <button class="project-card-action" type="button">
-                                    <span>OPEN PROJECT</span>
-                                    <span>&gt;</span>
-                                </button>
-                            </div>
-                            <div class="project-card">
-                                <div class="project-card-image"></div>
-                                <div class="project-card-body">
-                                    <h3 class="project-card-title">Project Title</h3>
-                                    <p class="project-card-meta">platform · role · year</p>
-                                    <p class="project-card-text">
-                                        Kısa açıklama alanı. Bu satırda oyunun türü, temel fikri
-                                        ve tasarım odağın (örneğin ekonomi, tempo, sistemler) özetlenecek.
-                                    </p>
-                                </div>
-                                <button class="project-card-action" type="button">
-                                    <span>OPEN PROJECT</span>
-                                    <span>&gt;</span>
-                                </button>
-                            </div>
-                            <div class="project-card">
-                                <div class="project-card-image"></div>
-                                <div class="project-card-body">
-                                    <h3 class="project-card-title">Project Title</h3>
-                                    <p class="project-card-meta">platform · role · year</p>
-                                    <p class="project-card-text">
-                                        Kısa açıklama alanı. Bu satırda oyunun türü, temel fikri
-                                        ve tasarım odağın (örneğin ekonomi, tempo, sistemler) özetlenecek.
-                                    </p>
-                                </div>
-                                <button class="project-card-action" type="button">
-                                    <span>OPEN PROJECT</span>
-                                    <span>&gt;</span>
-                                </button>
-                            </div>
-                            <div class="project-card">
-                                <div class="project-card-image"></div>
-                                <div class="project-card-body">
-                                    <h3 class="project-card-title">Project Title</h3>
-                                    <p class="project-card-meta">platform · role · year</p>
-                                    <p class="project-card-text">
-                                        Kısa açıklama alanı. Bu satırda oyunun türü, temel fikri
-                                        ve tasarım odağın (örneğin ekonomi, tempo, sistemler) özetlenecek.
-                                    </p>
-                                </div>
-                                <button class="project-card-action" type="button">
-                                    <span>OPEN PROJECT</span>
-                                    <span>&gt;</span>
-                                </button>
-                            </div>
-                            <div class="project-card">
-                                <div class="project-card-image"></div>
-                                <div class="project-card-body">
-                                    <h3 class="project-card-title">Project Title</h3>
-                                    <p class="project-card-meta">platform · role · year</p>
-                                    <p class="project-card-text">
-                                        Kısa açıklama alanı. Bu satırda oyunun türü, temel fikri
-                                        ve tasarım odağın (örneğin ekonomi, tempo, sistemler) özetlenecek.
-                                    </p>
-                                </div>
-                                <button class="project-card-action" type="button">
-                                    <span>OPEN PROJECT</span>
-                                    <span>&gt;</span>
-                                </button>
-                            </div>
-                            <div class="project-card">
-                                <div class="project-card-image"></div>
-                                <div class="project-card-body">
-                                    <h3 class="project-card-title">Project Title</h3>
-                                    <p class="project-card-meta">platform · role · year</p>
-                                    <p class="project-card-text">
-                                        Kısa açıklama alanı. Bu satırda oyunun türü, temel fikri
-                                        ve tasarım odağın (örneğin ekonomi, tempo, sistemler) özetlenecek.
-                                    </p>
-                                </div>
-                                <button class="project-card-action" type="button">
-                                    <span>OPEN PROJECT</span>
-                                    <span>&gt;</span>
-                                </button>
-                            </div>
-                            <div class="project-card">
-                                <div class="project-card-image"></div>
-                                <div class="project-card-body">
-                                    <h3 class="project-card-title">Project Title</h3>
-                                    <p class="project-card-meta">platform · role · year</p>
-                                    <p class="project-card-text">
-                                        Kısa açıklama alanı. Bu satırda oyunun türü, temel fikri
-                                        ve tasarım odağın (örneğin ekonomi, tempo, sistemler) özetlenecek.
-                                    </p>
-                                </div>
-                                <button class="project-card-action" type="button">
-                                    <span>OPEN CASE</span>
-                                    <span>&gt;</span>
-                                </button>
-                            </div>
-                        </div>
-                    </article>
+    <!-- ─── top bar ──────────────────────────────────── -->
+    <header class="bar">
+        <div class="bar-l">
+            <a class="brand" href="#">erkush34<sup>©</sup></a>
+        </div>
+        <nav class="nav" aria-label="Bölümler">
+            <button data-tab="work" class="is-active">work</button>
+            <button data-tab="bio">bio</button>
+            <button data-tab="academics">academics</button>
+            <button data-tab="contact">contact</button>
+        </nav>
+        <div class="bar-r">
+            <span class="status"><span class="dot"></span>available '26</span>
+            <span class="clock" id="clock">ist 00:00:00</span>
+        </div>
+    </header>
 
-                    <article class="panel" data-section="bio" aria-label="Bio">
-                        <h2 class="panel-title">Kısa biyografi ve yaklaşım</h2>
-                        <p class="panel-text">
-                            Bu alan, oyun tasarımına nasıl girdiğini ve bugün neye odaklandığını anlatan kısa bir metin için.
-                            <strong>Okunabilirlik</strong>, <strong>oyuncu ifadesi</strong> ve <strong>ekonomi netliği</strong>
-                            gibi tasarım prensiplerin sade cümlelerle listelenecek.
-                        </p>
-                    </article>
+    <!-- ─── hero ─────────────────────────────────────── -->
+    <section class="hero">
+        <div class="hero-top">
+            <span>portfolio · v0.2</span>
+            <span>— index 01 / 04 —</span>
+            <span>2026</span>
+        </div>
+        <h1 class="wordmark">erkush34</h1>
+        <div class="hero-foot">
+            <div>
+                <span class="lbl">role</span>
+                <span>game designer</span>
+            </div>
+            <div>
+                <span class="lbl">focus</span>
+                <span>systems · economy · pacing</span>
+            </div>
+            <div>
+                <span class="lbl">based</span>
+                <span>istanbul / remote</span>
+            </div>
+        </div>
+    </section>
 
-                    <article class="panel" data-section="academics" aria-label="Academics">
-                        <h2 class="panel-title">Akademik işler ve araştırmalar</h2>
-                        <p class="panel-text">
-                            Yüksek lisans tezin ve diğer araştırmalar burada kronolojik olarak yer alacak.
-                            Her satırda <strong>yıl</strong>, <strong>kurum</strong>, <strong>başlık</strong> ve tek cümlelik
-                            bir <strong>bulgu</strong> tutulacak; böylece sayfa minimal kalırken bilgi yoğun olacak.
-                        </p>
-                    </article>
-                </section>
-            </main>
+    <!-- ─── ticker ───────────────────────────────────── -->
+    <div class="ticker" aria-hidden="true">
+        <div class="ticker-track">
+            <span>★ portfolio v0.2 — 2026</span>
+            <span>★ now playing — balatro</span>
+            <span>★ now reading — a theory of fun</span>
+            <span>★ açığım — projeler için yazın</span>
+            <span>★ istanbul / remote</span>
+            <span>★ available for collabs</span>
+            <!-- repeat for seamless loop -->
+            <span>★ portfolio v0.2 — 2026</span>
+            <span>★ now playing — balatro</span>
+            <span>★ now reading — a theory of fun</span>
+            <span>★ açığım — projeler için yazın</span>
+            <span>★ istanbul / remote</span>
+            <span>★ available for collabs</span>
         </div>
     </div>
 
+    <!-- ─── main / panels ────────────────────────────── -->
+    <main aria-live="polite">
+
+        <!-- WORK -->
+        <section class="panel is-active" data-panel="work">
+            <header class="panel-head">
+                <span class="ph-num">§ 01</span>
+                <h2>selected work</h2>
+                <span class="ph-meta">2018 — 2026 / 08 entries</span>
+            </header>
+            <ol class="works">
+                <li class="work">
+                    <span class="w-num">01</span>
+                    <div class="w-body">
+                        <h3 class="w-title">velocity.</h3>
+                        <p class="w-desc">Time-trial racer about momentum and risk. Designed pacing curves so that "good enough" laps always tempt the player into one more attempt.</p>
+                    </div>
+                    <div class="w-meta">
+                        <span>steam · pc</span>
+                        <span>lead designer</span>
+                        <span>2024</span>
+                    </div>
+                    <span class="w-arrow">↗</span>
+                </li>
+                <li class="work">
+                    <span class="w-num">02</span>
+                    <div class="w-body">
+                        <h3 class="w-title">ledger.</h3>
+                        <p class="w-desc">Turn-based card economy where every purchase is also a debt. Built the card scarcity model and the interest-rate metaphor that drives the late game.</p>
+                    </div>
+                    <div class="w-meta">
+                        <span>itch.io · pc</span>
+                        <span>solo</span>
+                        <span>2023</span>
+                    </div>
+                    <span class="w-arrow">↗</span>
+                </li>
+                <li class="work">
+                    <span class="w-num">03</span>
+                    <div class="w-body">
+                        <h3 class="w-title">silt.</h3>
+                        <p class="w-desc">Fishing roguelike with a market simulation that rewards going out at unpopular hours. Owned the loot table and the price drift system.</p>
+                    </div>
+                    <div class="w-meta">
+                        <span>mobile · ios/android</span>
+                        <span>systems designer</span>
+                        <span>2023</span>
+                    </div>
+                    <span class="w-arrow">↗</span>
+                </li>
+                <li class="work">
+                    <span class="w-num">04</span>
+                    <div class="w-body">
+                        <h3 class="w-title">crow's foot.</h3>
+                        <p class="w-desc">Narrative platformer about a postal worker delivering letters in a city that keeps rearranging itself. Wrote the route generator and the dialogue branching tool.</p>
+                    </div>
+                    <div class="w-meta">
+                        <span>steam · pc/mac</span>
+                        <span>narrative + systems</span>
+                        <span>2022</span>
+                    </div>
+                    <span class="w-arrow">↗</span>
+                </li>
+                <li class="work">
+                    <span class="w-num">05</span>
+                    <div class="w-body">
+                        <h3 class="w-title">minutiae.</h3>
+                        <p class="w-desc">Micro-management sim played one minute at a time. Designed for very short sessions while preserving a long-arc economy.</p>
+                    </div>
+                    <div class="w-meta">
+                        <span>mobile · ios</span>
+                        <span>solo</span>
+                        <span>2022</span>
+                    </div>
+                    <span class="w-arrow">↗</span>
+                </li>
+                <li class="work">
+                    <span class="w-num">06</span>
+                    <div class="w-body">
+                        <h3 class="w-title">cassandra.</h3>
+                        <p class="w-desc">Tactical RPG built around predictions: every turn, you tell the game what you think the enemy will do, and you score for accuracy.</p>
+                    </div>
+                    <div class="w-meta">
+                        <span>steam · pc</span>
+                        <span>combat designer</span>
+                        <span>2021</span>
+                    </div>
+                    <span class="w-arrow">↗</span>
+                </li>
+                <li class="work">
+                    <span class="w-num">07</span>
+                    <div class="w-body">
+                        <h3 class="w-title">afterglow.</h3>
+                        <p class="w-desc">Walking simulator set in a single, very long sunset. Owned the 90-minute pacing and the audio-driven prompts.</p>
+                    </div>
+                    <div class="w-meta">
+                        <span>itch.io · pc</span>
+                        <span>solo</span>
+                        <span>2020</span>
+                    </div>
+                    <span class="w-arrow">↗</span>
+                </li>
+                <li class="work">
+                    <span class="w-num">08</span>
+                    <div class="w-body">
+                        <h3 class="w-title">burnpile.</h3>
+                        <p class="w-desc">48-hour game jam entry: a typing game where the keys you press are removed from the keyboard. Won "most likely to ruin a date."</p>
+                    </div>
+                    <div class="w-meta">
+                        <span>jam · web</span>
+                        <span>solo</span>
+                        <span>2019</span>
+                    </div>
+                    <span class="w-arrow">↗</span>
+                </li>
+            </ol>
+        </section>
+
+        <!-- BIO -->
+        <section class="panel" data-panel="bio">
+            <header class="panel-head">
+                <span class="ph-num">§ 02</span>
+                <h2>bio</h2>
+                <span class="ph-meta">est. 2018 / istanbul</span>
+            </header>
+            <div class="bio">
+                <p class="bio-lead">
+                    İstanbul'da çalışan bir <em>oyun tasarımcısı</em>.
+                    Sistemler, ekonomi ve tempo üzerine.
+                </p>
+                <div class="bio-body">
+                    <p>
+                        2018'den beri tek başına ve küçük takımlarla oyun yapıyorum.
+                        Çoğunlukla mekaniğin metinden önce konuştuğu, ilk on dakikada
+                        oyuncunun &quot;tamam, bu nasıl bir şeymiş&quot; diyebildiği oyunlar.
+                    </p>
+                    <p>
+                        Roguelike'lar, ekonomi-ağırlıklı sim'ler ve kısa-form deneysel
+                        projeler arasında geziniyorum. Sayılar, tablolar ve bir oyuncunun
+                        onları farkında olmadan okuma şekliyle ilgileniyorum.
+                    </p>
+                    <p>
+                        Şu sıralar: kendi prototiplerim, küçük çaplı yarı-zamanlı
+                        danışmanlıklar ve Bilgi Üniversitesi'nde yüksek lisans tezimi
+                        bitirme telaşı. Mesai dışında genelde oynuyorum, bazen yazıyorum.
+                    </p>
+                </div>
+            </div>
+            <div class="creed">
+                <span class="creed-lbl">manifesto / kısa</span>
+                <ol class="creed-list">
+                    <li>Oyuncular sistemleri metinden daha hızlı okur.</li>
+                    <li>Ekonomi netliği, tasarım hilesinden önce gelir.</li>
+                    <li>Bir oyunun ilk on dakikası, son on saatinden önemlidir.</li>
+                    <li>"Eğlence" tasarlanmaz; doğru kısıtlamalar bulunur.</li>
+                    <li>Eğer mekanik anlatıyorsa, metin sustursun.</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ACADEMICS -->
+        <section class="panel" data-panel="academics">
+            <header class="panel-head">
+                <span class="ph-num">§ 03</span>
+                <h2>academics</h2>
+                <span class="ph-meta">2019 — 2026 / 06 entries</span>
+            </header>
+            <ol class="acad">
+                <li>
+                    <span class="acad-yr">2026</span>
+                    <div class="acad-body">
+                        <h3 class="acad-title">procedural narrative frameworks in roguelikes</h3>
+                        <p class="acad-note">M.A. tezi — devam ediyor. Bulgu: ekonomi eğrileri, tekrar oynanışı dal-budak hikâyeden daha fazla yönlendiriyor.</p>
+                    </div>
+                    <span class="acad-place">bilgi · ma. game design</span>
+                </li>
+                <li>
+                    <span class="acad-yr">2024</span>
+                    <div class="acad-body">
+                        <h3 class="acad-title">designing for the second hour</h3>
+                        <p class="acad-note">Konferans sunumu. İlk bir saatten sonra oyuncuyu tutan tasarım kararları.</p>
+                    </div>
+                    <span class="acad-place">gdc anatolia · talk</span>
+                </li>
+                <li>
+                    <span class="acad-yr">2023</span>
+                    <div class="acad-body">
+                        <h3 class="acad-title">why card games teach economics better than textbooks</h3>
+                        <p class="acad-note">Workshop. Kart oyunlarında kıtlık, takas ve bilgi asimetrisi üzerine.</p>
+                    </div>
+                    <span class="acad-place">istanbul · workshop</span>
+                </li>
+                <li>
+                    <span class="acad-yr">2022</span>
+                    <div class="acad-body">
+                        <h3 class="acad-title">player-driven difficulty in single-player roguelikes</h3>
+                        <p class="acad-note">Akademik makale. Oyuncunun kendi zorluk eğrisini seçtiği sistemlerin tasarım çıkarımları.</p>
+                    </div>
+                    <span class="acad-place">odtü · journal</span>
+                </li>
+                <li>
+                    <span class="acad-yr">2021</span>
+                    <div class="acad-body">
+                        <h3 class="acad-title">numbers as narrative</h3>
+                        <p class="acad-note">Misafir ders. Sayıların ve UI elementlerinin oyuncu için nasıl hikâye anlattığı.</p>
+                    </div>
+                    <span class="acad-place">bilgi · guest lecture</span>
+                </li>
+                <li>
+                    <span class="acad-yr">2019</span>
+                    <div class="acad-body">
+                        <h3 class="acad-title">b.a. thesis — pacing in short-form games</h3>
+                        <p class="acad-note">Lisans tezi. 30 dakika altı oyunların yapı analizi ve pacing örüntüleri.</p>
+                    </div>
+                    <span class="acad-place">bilgi · ba. comm. design</span>
+                </li>
+            </ol>
+        </section>
+
+        <!-- CONTACT -->
+        <section class="panel" data-panel="contact">
+            <header class="panel-head">
+                <span class="ph-num">§ 04</span>
+                <h2>contact</h2>
+                <span class="ph-meta">en hızlı: e-posta</span>
+            </header>
+            <div class="contact">
+                <a class="contact-mail" href="mailto:erkutsoglu@gmail.com">erkutsoglu@gmail.com&nbsp;↗</a>
+                <div class="contact-grid">
+                    <a href="#"><span>x / twitter</span><span>@erkush34</span></a>
+                    <a href="#"><span>linkedin</span><span>/in/erkush34</span></a>
+                    <a href="#"><span>itch.io</span><span>/erkush34</span></a>
+                    <a href="#"><span>github</span><span>/erkush34</span></a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ─── footer ───────────────────────────────────── -->
+    <footer class="foot">
+        <div class="foot-grid">
+            <div>
+                <span class="lbl">contact</span>
+                <a href="mailto:erkutsoglu@gmail.com">erkutsoglu@gmail.com</a>
+            </div>
+            <div>
+                <span class="lbl">elsewhere</span>
+                <a href="#">x / @erkush34</a>
+                <a href="#">linkedin</a>
+                <a href="#">itch.io</a>
+                <a href="#">github</a>
+            </div>
+            <div>
+                <span class="lbl">colophon</span>
+                <p>Set in Archivo Black &amp; IBM Plex Mono.</p>
+                <p>Vanilla HTML / CSS / JS. No frameworks were harmed.</p>
+            </div>
+            <div>
+                <span class="lbl">version</span>
+                <p>v0.2 · 2026</p>
+                <p>last updated apr 2026</p>
+            </div>
+        </div>
+        <div class="foot-wordmark" aria-hidden="true">erkush34</div>
+        <div class="foot-mark">
+            <span>© 2026 erkut süleymanoğlu</span>
+            <span>handcrafted in istanbul</span>
+            <span>↑ to top</span>
+        </div>
+    </footer>
+
     <script>
         (function () {
-            const tabs = document.querySelectorAll(".hero-tab");
+            // ─── tab switching ────────────────────────
+            const tabs = document.querySelectorAll(".nav button");
             const panels = document.querySelectorAll(".panel");
 
             function activate(key) {
-                panels.forEach((panel) => {
-                    panel.classList.toggle("is-active", panel.getAttribute("data-section") === key);
-                });
-
-                tabs.forEach((tab) => {
-                    tab.classList.toggle("is-active", tab.getAttribute("data-section-target") === key);
-                });
-
-                if (history.replaceState) {
-                    history.replaceState(null, "", "#" + key);
-                }
+                panels.forEach(p => p.classList.toggle("is-active", p.dataset.panel === key));
+                tabs.forEach(t => t.classList.toggle("is-active", t.dataset.tab === key));
+                if (history.replaceState) history.replaceState(null, "", "#" + key);
             }
 
-            tabs.forEach((tab) => {
-                tab.addEventListener("click", function () {
-                    const key = this.getAttribute("data-section-target");
-                    if (key) activate(key);
-                });
+            tabs.forEach(tab => {
+                tab.addEventListener("click", () => activate(tab.dataset.tab));
             });
 
             const hash = window.location.hash.replace("#", "");
-            if (hash) {
-                const initial = document.querySelector('.hero-tab[data-section-target="' + hash + '"]');
-                if (initial) activate(hash);
+            if (hash && document.querySelector(`[data-panel="${hash}"]`)) activate(hash);
+
+            // ─── live clock (istanbul) ────────────────
+            const clock = document.getElementById("clock");
+            function tick() {
+                const now = new Date();
+                // get istanbul time via timezone offset
+                const ist = new Date(now.toLocaleString("en-US", { timeZone: "Europe/Istanbul" }));
+                const hh = String(ist.getHours()).padStart(2, "0");
+                const mm = String(ist.getMinutes()).padStart(2, "0");
+                const ss = String(ist.getSeconds()).padStart(2, "0");
+                clock.textContent = `ist ${hh}:${mm}:${ss}`;
+            }
+            tick();
+            setInterval(tick, 1000);
+
+            // ─── scroll-to-top on footer click ────────
+            const totop = document.querySelector(".foot-mark span:last-child");
+            if (totop) {
+                totop.style.cursor = "pointer";
+                totop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
             }
         })();
     </script>
