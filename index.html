@@ -16,7 +16,6 @@
             --pad: clamp(16px, 2.6vw, 36px);
             --rule: 1.5px solid #000;
             --thin: 1px solid #000;
-            --bar-h: 51px;
         }
 
         *, *::before, *::after { box-sizing: border-box; }
@@ -127,30 +126,16 @@
         .clock { font-variant-numeric: tabular-nums; }
 
         /* ─── hero (sticky · scroll-driven collapse) ───── */
-        .hero-shell {
-            position: relative;
-            height: 200vh; /* gives ~100vh of scroll for the intro animation */
-        }
         .hero {
-            position: sticky;
-            top: var(--bar-h);
-            height: calc(100vh - var(--bar-h));
-            padding: 0 var(--pad);
+            padding: clamp(28px, 6vh, 72px) var(--pad) clamp(28px, 6vh, 72px);
             border-bottom: var(--rule);
             background: var(--bg);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            z-index: 5;
         }
         .hero-row {
-            flex: 1;
             display: grid;
             grid-template-columns: minmax(0, 1fr) auto;
             gap: clamp(20px, 4vw, 64px);
             align-items: center;
-            min-height: 0;
-            padding: clamp(20px, 4vh, 56px) 0;
         }
 
         .wordmark {
@@ -164,8 +149,6 @@
             text-transform: lowercase;
             color: #000;
             user-select: none;
-            transform-origin: left top;
-            will-change: transform;
         }
 
         .portrait {
@@ -174,8 +157,6 @@
             aspect-ratio: 4 / 5;
             background: #000;
             flex-shrink: 0;
-            transform-origin: right top;
-            will-change: transform;
             overflow: hidden;
             border: var(--thin);
         }
@@ -801,18 +782,16 @@
         </div>
     </header>
 
-    <!-- ─── hero (sticky · scroll-driven collapse) ───── -->
-    <div class="hero-shell">
-        <section class="hero">
-            <div class="hero-row">
-                <h1 class="wordmark">erkush34</h1>
-                <div class="portrait">
-                    <canvas id="portrait" width="280" height="350"></canvas>
-                    <span class="portrait-tag">portrait / dithered</span>
-                </div>
+    <!-- ─── hero ─────────────────────────────────────── -->
+    <section class="hero">
+        <div class="hero-row">
+            <h1 class="wordmark">erkush34</h1>
+            <div class="portrait">
+                <canvas id="portrait" width="280" height="350"></canvas>
+                <span class="portrait-tag">portrait / dithered</span>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
 
     <!-- ─── ticker ───────────────────────────────────── -->
     <div class="ticker" aria-hidden="true">
@@ -1286,50 +1265,6 @@
                 img.src = "portrait.jpg";
             }
 
-            // ─── scroll-driven hero collapse ──────────
-            // Hero is sticky inside hero-shell. As shell scrolls
-            // past, progress goes 0→1. Wordmark + portrait scale
-            // toward their respective top corners.
-            // Reversible because it's bound directly to scroll.
-            const shell = document.querySelector(".hero-shell");
-            const wordmark = document.querySelector(".wordmark");
-            const portraitEl = document.querySelector(".portrait");
-
-            // Sync --bar-h with actual rendered bar height
-            function syncBarH() {
-                const b = document.querySelector(".bar");
-                if (b) document.documentElement.style.setProperty("--bar-h", b.offsetHeight + "px");
-            }
-            syncBarH();
-            window.addEventListener("resize", syncBarH);
-
-            let ticking = false;
-            function onScroll() {
-                if (!shell || !wordmark) return;
-                const r = shell.getBoundingClientRect();
-                const total = shell.offsetHeight - window.innerHeight;
-                const scrolled = Math.max(0, -r.top);
-                const p = Math.max(0, Math.min(1, scrolled / total));
-
-                // ease the curve a touch — feels more premium than linear
-                const e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
-
-                const wScale = 1 - e * 0.55;       // 1 → 0.45
-                const pScale = 1 - e * 0.6;        // 1 → 0.40
-                wordmark.style.transform = `scale(${wScale})`;
-                if (portraitEl) portraitEl.style.transform = `scale(${pScale})`;
-                ticking = false;
-            }
-            function requestTick() {
-                if (!ticking) {
-                    requestAnimationFrame(onScroll);
-                    ticking = true;
-                }
-            }
-            window.addEventListener("scroll", requestTick, { passive: true });
-            window.addEventListener("resize", requestTick);
-            onScroll();
-
             // ─── CRT atmosphere (whisper) ─────────────
             // Static scanline + vignette overlays. No JS needed
             // beyond appending the divs once.
@@ -1447,12 +1382,7 @@
             // veil grows up → fade out → remove. Skippable via any
             // keydown/click before the wipe phase.
             (async function initBoot() {
-                const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-                if (sessionStorage.getItem("erkush34.booted") === "1" || reduced) {
-                    sessionStorage.setItem("erkush34.booted", "1");
-                    return;
-                }
-
+                // boot runs on every visit; click required to dismiss
                 document.body.classList.add("is-booting");
 
                 const boot = document.createElement("div");
@@ -1530,15 +1460,21 @@
                     requestAnimationFrame(() => requestAnimationFrame(frame));
                 })();
 
-                // skip handling — click anywhere on boot to skip to wipe
-                let skipped = false;
-                boot.addEventListener("click", () => { skipped = true; }, { once: true });
+                // click handling — early click skips status lines straight
+                // to the prompt; click at the prompt opens the site (wipe).
+                let promptShown = false;
+                let skipToPrompt = false;
+                let openSite = false;
+                boot.addEventListener("click", () => {
+                    if (promptShown) openSite = true;
+                    else skipToPrompt = true;
+                });
                 boot.style.cursor = "pointer";
 
                 const wait = (ms) => new Promise(r => setTimeout(r, ms));
                 const waitOrSkip = async (ms) => {
                     const t0 = Date.now();
-                    while (!skipped && Date.now() - t0 < ms) {
+                    while (!skipToPrompt && Date.now() - t0 < ms) {
                         await wait(Math.min(40, ms - (Date.now() - t0)));
                     }
                 };
@@ -1558,7 +1494,7 @@
                 await waitOrSkip(1300);
 
                 for (const line of lines) {
-                    if (skipped) break;
+                    if (skipToPrompt) break;
                     const li = document.createElement("li");
                     li.textContent = line.prefix;
                     statusEl.appendChild(li);
@@ -1577,11 +1513,10 @@
                     await waitOrSkip(180);
                 }
 
-                // prompt
-                if (!skipped) {
-                    promptEl.hidden = false;
-                    await waitOrSkip(550);
-                }
+                // prompt — show and wait for click (no auto-progression)
+                promptShown = true;
+                promptEl.hidden = false;
+                while (!openSite) await wait(50);
 
                 // wipe out — dither veil grows up, then fade
                 const veil = boot.querySelector(".boot-veil");
@@ -1591,7 +1526,6 @@
                 await wait(320);
                 boot.remove();
                 document.body.classList.remove("is-booting");
-                sessionStorage.setItem("erkush34.booted", "1");
             })();
         })();
     </script>
