@@ -44,6 +44,7 @@
 
         a { color: inherit; text-decoration: none; }
         button { font: inherit; color: inherit; }
+        a:focus-visible, button:focus-visible { outline: 2px dashed currentColor; outline-offset: 4px; }
 
         /* ─── selection ────────────────────────────────── */
         ::selection { background: #000; color: #fff; }
@@ -110,6 +111,7 @@
         }
         .nav button:hover { background: #000; color: #fff; }
         .nav button.is-active { background: #000; color: #fff; }
+        .nav-soon { margin-left: 6px; font-size: 10px; letter-spacing: 0.1em; opacity: 0.6; }
 
         .status { display: inline-flex; align-items: center; gap: 7px; }
         .dot {
@@ -143,12 +145,13 @@
             margin: 0;
             font-family: "Archivo Black", system-ui, sans-serif;
             font-weight: 400;
-            font-size: clamp(70px, 18vw, 280px);
+            font-size: clamp(52px, 14vw, 280px);
             line-height: 0.82;
             letter-spacing: -0.055em;
             text-transform: lowercase;
             color: #000;
             user-select: none;
+            white-space: nowrap;
         }
 
         .portrait {
@@ -241,6 +244,23 @@
             text-transform: lowercase;
             line-height: 0.95;
         }
+
+        .coming-soon {
+            padding: clamp(48px, 9vh, 120px) var(--pad);
+            border-bottom: var(--thin);
+        }
+        .coming-soon h3 {
+            margin: 0 0 20px;
+            font-family: "Archivo Black", sans-serif;
+            font-weight: 400;
+            font-size: clamp(40px, 8vw, 100px);
+            letter-spacing: -0.04em;
+            line-height: 1;
+            text-transform: lowercase;
+        }
+        .coming-soon p { max-width: 48ch; margin: 0 0 28px; }
+        .text-link { text-decoration: underline; text-underline-offset: 4px; }
+        .text-link:hover { background: #000; color: #fff; }
 
         /* ─── work list ────────────────────────────────── */
         .works { list-style: none; margin: 0; padding: 0; }
@@ -472,7 +492,7 @@
         }
         .contact-mail {
             font-family: "Archivo Black", sans-serif;
-            font-size: clamp(36px, 7vw, 110px);
+            font-size: clamp(22px, 6.4vw, 110px);
             letter-spacing: -0.04em;
             text-transform: lowercase;
             line-height: 0.95;
@@ -482,6 +502,8 @@
             transition: background 0.18s, color 0.18s;
             align-self: start;
             justify-self: start;
+            max-width: 100%;
+            overflow-wrap: anywhere;
         }
         .contact-mail:hover { background: #000; color: #fff; }
         .contact-grid {
@@ -556,25 +578,29 @@
 
         .foot-wordmark {
             font-family: "Archivo Black", sans-serif;
-            font-size: clamp(60px, 24vw, 340px);
+            font-size: clamp(52px, 19vw, 340px);
             line-height: 0.82;
             letter-spacing: -0.055em;
             text-transform: lowercase;
             margin: 8px 0 -10px;
             user-select: none;
+            white-space: nowrap;
         }
 
         /* ─── responsive ───────────────────────────────── */
-        @media (max-width: 900px) {
+        @media (max-width: 1100px) {
             .bar {
                 grid-template-columns: 1fr auto;
                 gap: 12px;
             }
             .bar-r { display: none; }
             .nav { justify-self: end; }
+        }
+
+        @media (max-width: 900px) {
             .hero-row { grid-template-columns: 1fr; gap: 20px; align-items: end; }
             .portrait { width: 140px; align-self: start; justify-self: end; margin-top: 8px; }
-            .wordmark { font-size: clamp(64px, 22vw, 200px); }
+            .wordmark { font-size: clamp(52px, 19vw, 200px); }
             .bio { grid-template-columns: 1fr; gap: 32px; }
             .creed { grid-template-columns: 1fr; gap: 24px; }
             .work { grid-template-columns: 36px 1fr auto; gap: 16px; padding: 18px var(--pad); }
@@ -583,6 +609,16 @@
             .acad-place { display: none; }
             .contact-grid { grid-template-columns: 1fr 1fr; }
             .foot-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+        }
+
+        @media (max-width: 700px) {
+            .bar { grid-template-columns: 1fr; }
+            .nav { justify-self: stretch; flex-wrap: wrap; }
+            .nav button { flex: 1 1 40%; }
+            .hero { padding-block: 28px; }
+            .hero-row { grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: center; }
+            .wordmark { font-size: clamp(32px, 13.5vw, 94px); }
+            .portrait { width: 72px; margin-top: 0; }
         }
 
         @media (max-width: 520px) {
@@ -768,13 +804,13 @@
     <!-- ─── top bar ──────────────────────────────────── -->
     <header class="bar">
         <div class="bar-l">
-            <a class="brand" href="#">erkush34<sup>©</sup></a>
+            <a class="brand" href="#contact">erkush34<sup>©</sup></a>
         </div>
         <nav class="nav" aria-label="Bölümler">
-            <button data-tab="work" class="is-active">work</button>
-            <button data-tab="bio">bio</button>
-            <button data-tab="academics">academics</button>
-            <button data-tab="contact">contact</button>
+            <button data-tab="contact" class="is-active" aria-pressed="true">contact</button>
+            <button data-tab="bio" aria-pressed="false">bio</button>
+            <button data-tab="work" aria-pressed="false">my games <span class="nav-soon">soon</span></button>
+            <button data-tab="academics" aria-pressed="false">academic projects <span class="nav-soon">soon</span></button>
         </nav>
         <div class="bar-r">
             <span class="status"><span class="dot"></span>available '26</span>
@@ -804,14 +840,16 @@
     <main aria-live="polite">
 
         <!-- WORK -->
-        <section class="panel is-active" data-panel="work">
+        <section class="panel" data-panel="work">
             <header class="panel-head">
-                <h2>selected work</h2>
-                <span class="ph-meta" id="works-meta">loading…</span>
+                <h2>my games</h2>
+                <span class="ph-meta">coming soon</span>
             </header>
-            <ol class="works" id="works">
-                <li class="works-status">loading projects…</li>
-            </ol>
+            <div class="coming-soon">
+                <h3>Coming soon</h3>
+                <p>Oyunlarımı burada paylaşacağım. Şimdilik iletişim kanallarından bana ulaşabilirsin.</p>
+                <a class="text-link" href="#contact">let’s talk ↗</a>
+            </div>
         </section>
 
         <!-- BIO -->
@@ -833,23 +871,38 @@
         <!-- ACADEMICS -->
         <section class="panel" data-panel="academics">
             <header class="panel-head">
-                <h2>academics</h2>
-                <span class="ph-meta" id="acad-meta">loading…</span>
+                <h2>academic projects</h2>
+                <span class="ph-meta">coming soon</span>
             </header>
-            <ol class="acad" id="acad">
-                <li class="works-status">loading academics…</li>
-            </ol>
+            <div class="coming-soon">
+                <h3>Coming soon</h3>
+                <p>Akademik projelerimi burada paylaşacağım. Şimdilik iletişim kanallarından bana ulaşabilirsin.</p>
+                <a class="text-link" href="#contact">let’s talk ↗</a>
+            </div>
         </section>
 
         <!-- CONTACT -->
-        <section class="panel" data-panel="contact">
+        <section class="panel is-active" data-panel="contact">
             <header class="panel-head">
                 <h2>contact</h2>
-                <span class="ph-meta" id="contact-meta">loading…</span>
+                <span class="ph-meta" id="contact-meta">en hızlı: e-posta</span>
             </header>
             <div class="contact">
-                <a class="contact-mail" id="contact-mail" href="#">loading…</a>
-                <div class="contact-grid" id="contact-links"></div>
+                <a class="contact-mail" id="contact-mail" href="mailto:erkutsoglu@gmail.com">erkutsoglu@gmail.com&nbsp;↗</a>
+                <div class="contact-grid" id="contact-links">
+                    <a href="https://x.com/erkush34" target="_blank" rel="noopener">
+                        <span>x / twitter</span><span>@erkush34</span>
+                    </a>
+                    <a href="https://www.linkedin.com/in/erkush34" target="_blank" rel="noopener">
+                        <span>linkedin</span><span>/in/erkush34</span>
+                    </a>
+                    <a href="https://erkush34.itch.io" target="_blank" rel="noopener">
+                        <span>itch.io</span><span>/erkush34</span>
+                    </a>
+                    <a href="https://github.com/erkush34" target="_blank" rel="noopener">
+                        <span>github</span><span>/erkush34</span>
+                    </a>
+                </div>
             </div>
         </section>
 
@@ -862,11 +915,16 @@
         <div class="foot-grid">
             <div>
                 <span class="lbl">contact</span>
-                <a id="foot-mail" href="#">—</a>
+                <a id="foot-mail" href="mailto:erkutsoglu@gmail.com">erkutsoglu@gmail.com</a>
             </div>
             <div>
                 <span class="lbl">elsewhere</span>
-                <div id="foot-links"></div>
+                <div id="foot-links">
+                    <a href="https://x.com/erkush34" target="_blank" rel="noopener">x / twitter — @erkush34</a>
+                    <a href="https://www.linkedin.com/in/erkush34" target="_blank" rel="noopener">linkedin — /in/erkush34</a>
+                    <a href="https://erkush34.itch.io" target="_blank" rel="noopener">itch.io — /erkush34</a>
+                    <a href="https://github.com/erkush34" target="_blank" rel="noopener">github — /erkush34</a>
+                </div>
             </div>
             <div>
                 <span class="lbl">colophon</span>
@@ -876,7 +934,7 @@
             <div>
                 <span class="lbl">version</span>
                 <p>v0.2 · 2026</p>
-                <p>last updated apr 2026</p>
+                <p>last updated nov 2026</p>
             </div>
         </div>
         <div class="foot-wordmark" aria-hidden="true">erkush34</div>
@@ -897,8 +955,13 @@
             const panels = document.querySelectorAll(".panel");
 
             function activate(key) {
+                if (!Array.from(panels).some(p => p.dataset.panel === key)) return;
                 panels.forEach(p => p.classList.toggle("is-active", p.dataset.panel === key));
-                tabs.forEach(t => t.classList.toggle("is-active", t.dataset.tab === key));
+                tabs.forEach(t => {
+                    const active = t.dataset.tab === key;
+                    t.classList.toggle("is-active", active);
+                    t.setAttribute("aria-pressed", String(active));
+                });
                 if (history.replaceState) history.replaceState(null, "", "#" + key);
             }
 
@@ -906,8 +969,12 @@
                 tab.addEventListener("click", () => activate(tab.dataset.tab));
             });
 
-            const hash = window.location.hash.replace("#", "");
-            if (hash && document.querySelector(`[data-panel="${hash}"]`)) activate(hash);
+            function activateFromHash() {
+                const hash = window.location.hash.slice(1);
+                activate(Array.from(panels).some(p => p.dataset.panel === hash) ? hash : "contact");
+            }
+            window.addEventListener("hashchange", activateFromHash);
+            activateFromHash();
 
             // ─── live clock (istanbul) ────────────────
             const clock = document.getElementById("clock");
@@ -930,12 +997,9 @@
                 totop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
             }
 
-            // ─── projects loader ──────────────────────
-            // Reads projects/_index.json (slug list) then each
-            // projects/<slug>/project.json. Falls back gracefully
-            // if running from file:// (fetch is blocked there).
-            const worksEl = document.getElementById("works");
-            const worksMeta = document.getElementById("works-meta");
+            // Project and academic data stay on disk until those sections are ready.
+            // Only the live sections load content while the others show coming soon.
+            const loaders = {};
 
             function escapeHtml(s) {
                 return String(s ?? "")
@@ -944,76 +1008,6 @@
                     .replace(/>/g, "&gt;")
                     .replace(/"/g, "&quot;");
             }
-
-            function renderWork(p, i) {
-                const num = String(i + 1).padStart(2, "0");
-                const linkAttr = p.link ? ` data-link="${escapeHtml(p.link)}"` : "";
-                return `
-                    <li class="work" data-slug="${escapeHtml(p.slug)}"${linkAttr}>
-                        <span class="w-num">${num}</span>
-                        <div class="w-body">
-                            <h3 class="w-title">${escapeHtml(p.title)}</h3>
-                            <p class="w-desc">${escapeHtml(p.description)}</p>
-                        </div>
-                        <div class="w-meta">
-                            <span>${escapeHtml(p.platform)}</span>
-                            <span>${escapeHtml(p.role)}</span>
-                            <span>${escapeHtml(p.year)}</span>
-                        </div>
-                        <span class="w-arrow">↗</span>
-                    </li>
-                `;
-            }
-
-            async function loadProjects() {
-                try {
-                    const idxRes = await fetch("projects/_index.json", { cache: "no-cache" });
-                    if (!idxRes.ok) throw new Error("index missing");
-                    const idx = await idxRes.json();
-                    const slugs = idx.projects || [];
-
-                    const projects = await Promise.all(
-                        slugs.map(async (slug) => {
-                            const r = await fetch(`projects/${slug}/project.json`, { cache: "no-cache" });
-                            if (!r.ok) return null;
-                            const data = await r.json();
-                            return { slug, ...data };
-                        })
-                    );
-
-                    const valid = projects.filter(Boolean);
-                    if (!valid.length) throw new Error("no projects");
-
-                    worksEl.innerHTML = valid.map(renderWork).join("");
-                    worksEl.addEventListener("click", (e) => {
-                        const row = e.target.closest(".work");
-                        if (!row) return;
-                        const link = row.dataset.link;
-                        if (link) window.open(link, "_blank", "noopener");
-                    });
-                    if (worksMeta) {
-                        const years = valid.map(p => parseInt(p.year, 10)).filter(Number.isFinite);
-                        const range = years.length ? `${Math.min(...years)} — ${Math.max(...years)} / ` : "";
-                        const count = String(valid.length).padStart(2, "0");
-                        worksMeta.textContent = `${range}${count} entries`;
-                    }
-                    return true;
-                } catch (err) {
-                    worksEl.innerHTML = `
-                        <li class="works-error">
-                            <strong>projects could not be loaded</strong>
-                            <span>If you opened this file directly, the browser blocks <code>fetch()</code> on <code>file://</code>. Run a local server:</span>
-                            <code>python -m http.server 8000</code>
-                            <span>Then visit <strong>http://localhost:8000</strong></span>
-                        </li>
-                    `;
-                    if (worksMeta) worksMeta.textContent = "offline";
-                    return false;
-                }
-            }
-
-            const loaders = {};
-            loaders.projects = loadProjects();
 
             // ─── bio loader ───────────────────────────
             // Reads content/bio.json. Lead supports **emphasis**
@@ -1045,48 +1039,6 @@
                 }
             }
             loaders.bio = loadBio();
-
-            // ─── academics loader ─────────────────────
-            const acadEl = document.getElementById("acad");
-            const acadMeta = document.getElementById("acad-meta");
-            async function loadAcademics() {
-                try {
-                    const r = await fetch("content/academics.json", { cache: "no-cache" });
-                    if (!r.ok) throw new Error("acad missing");
-                    const d = await r.json();
-                    const entries = d.entries || [];
-                    if (!entries.length) throw new Error("no entries");
-
-                    acadEl.innerHTML = entries.map(e => `
-                        <li>
-                            <span class="acad-yr">${escapeHtml(e.year)}</span>
-                            <div class="acad-body">
-                                <h3 class="acad-title">${escapeHtml(e.title)}</h3>
-                                <p class="acad-note">${escapeHtml(e.note)}</p>
-                            </div>
-                            <span class="acad-place">${escapeHtml(e.place)}</span>
-                        </li>
-                    `).join("");
-
-                    if (acadMeta) {
-                        const years = entries.map(e => parseInt(e.year, 10)).filter(Number.isFinite);
-                        const range = years.length ? `${Math.min(...years)} — ${Math.max(...years)} / ` : "";
-                        const count = String(entries.length).padStart(2, "0");
-                        acadMeta.textContent = `${range}${count} entries`;
-                    }
-                    return true;
-                } catch {
-                    acadEl.innerHTML = `
-                        <li class="works-error">
-                            <strong>academics could not be loaded</strong>
-                            <span>Run a local server: <code>python -m http.server 8000</code></span>
-                        </li>
-                    `;
-                    if (acadMeta) acadMeta.textContent = "offline";
-                    return false;
-                }
-            }
-            loaders.academics = loadAcademics();
 
             // ─── contact loader (panel + footer) ──────
             const contactMail = document.getElementById("contact-mail");
@@ -1122,9 +1074,7 @@
                     `).join("");
                     return true;
                 } catch {
-                    contactMail.textContent = "contact data offline — needs local server";
-                    if (contactMeta) contactMeta.textContent = "offline";
-                    footMail.textContent = "—";
+                    // Keep the static contact links usable if the JSON cannot load.
                     return false;
                 }
             }
@@ -1311,7 +1261,7 @@
                 window.__glitch = {
                     word: () => glyphs[Math.floor(Math.random() * glyphs.length)]
                         .classList.add("is-glitching") || setTimeout(() => glyphs.forEach(g => g.classList.remove("is-glitching")), 250),
-                    scramble: (key = "work") => {
+                    scramble: (key = "contact") => {
                         const h2 = document.querySelector(`[data-panel="${key}"] .panel-head h2`);
                         if (h2) scrambleHeading(h2);
                     }
@@ -1484,9 +1434,7 @@
 
                 const lines = [
                     { prefix: "> checking memory.............. 8mb",  ready: wait(200).then(() => true) },
-                    { prefix: "> loading projects............. ",     ready: loaders.projects },
                     { prefix: "> loading bio.................. ",     ready: loaders.bio },
-                    { prefix: "> loading academics............ ",     ready: loaders.academics },
                     { prefix: "> loading contact.............. ",     ready: loaders.contact }
                 ];
 
